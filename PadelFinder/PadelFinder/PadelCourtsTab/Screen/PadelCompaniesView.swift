@@ -10,8 +10,11 @@ import SwiftUI
 struct PadelCompaniesView: View {
     @EnvironmentObject var navigator: Navigator<PadelCourtsTabNavigatorDestination>
     @StateObject var viewModel: PadelCompaniesViewModel
+    @State var currentDate = Date()
     
     var body: some View {
-        Text("test")
+        VStack(spacing: 0) {
+            CalendarHStack(currentDate: $currentDate)
+        }
     }
 }
