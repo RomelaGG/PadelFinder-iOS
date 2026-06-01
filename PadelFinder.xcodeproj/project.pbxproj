@@ -10,6 +10,7 @@
 		AE7EBFF82FCDD23C00390101 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE7EBFE62FCDD23C00390101 /* Assets.xcassets */; };
 		AE7EC0222FCDDF9000390101 /* CoreNavigation in Frameworks */ = {isa = PBXBuildFile; productRef = AE7EC0212FCDDF9000390101 /* CoreNavigation */; };
 		AE7EC0302FCDF45000390101 /* CoreUI in Frameworks */ = {isa = PBXBuildFile; productRef = AE7EC0322FCDF45000390101 /* CoreUI */; };
+		AE841EAB2FCDFEC1000DEC18 /* PresentationLayer in Frameworks */ = {isa = PBXBuildFile; productRef = AE841EAA2FCDFEC1000DEC18 /* PresentationLayer */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -18,20 +19,10 @@
 		AE7EC01F2FCDD6E200390101 /* CoreNavigation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CoreNavigation; sourceTree = SOURCE_ROOT; };
 		AE7EC0232FCDEBB500390101 /* CoreUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CoreUI; sourceTree = SOURCE_ROOT; };
 		AE7EC02E2FCDED0400390101 /* DesignSystem */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DesignSystem; sourceTree = SOURCE_ROOT; };
+		AE841EA82FCDFC02000DEC18 /* PresentationLayer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PresentationLayer; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		AE7EC01D2FCDD2A000390101 /* Exceptions for "PadelCourtsTab" folder in "PadelFinder" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				FlowRunnnerHelpers/PadelCourtsTabFlowRunnerFactory.swift,
-				FlowRunnnerHelpers/PadelCourtsTabFlowView.swift,
-				FlowRunnnerHelpers/PadelCourtsTabNavigatorDestination.swift,
-				Screen/PadelCompaniesView.swift,
-				Screen/PadelCompaniesViewModel.swift,
-			);
-			target = AE2E01552FCB20530084C4C8 /* PadelFinder */;
-		};
 		AE7EC0332FCDF8E000390101 /* Exceptions for "App" folder in "PadelFinder" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -50,14 +41,6 @@
 			path = App;
 			sourceTree = "<group>";
 		};
-		AE7EC00A2FCDD29F00390101 /* PadelCourtsTab */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				AE7EC01D2FCDD2A000390101 /* Exceptions for "PadelCourtsTab" folder in "PadelFinder" target */,
-			);
-			path = PadelCourtsTab;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +49,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE7EC0222FCDDF9000390101 /* CoreNavigation in Frameworks */,
+				AE841EAB2FCDFEC1000DEC18 /* PresentationLayer in Frameworks */,
 				AE7EC0302FCDF45000390101 /* CoreUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -76,11 +60,11 @@
 		AE2E014D2FCB20520084C4C8 = {
 			isa = PBXGroup;
 			children = (
+				AE841EA82FCDFC02000DEC18 /* PresentationLayer */,
 				AE7EC02E2FCDED0400390101 /* DesignSystem */,
 				AE7EC0232FCDEBB500390101 /* CoreUI */,
 				AE7EC01F2FCDD6E200390101 /* CoreNavigation */,
 				AE7EBFFA2FCDD29F00390101 /* App */,
-				AE7EC00A2FCDD29F00390101 /* PadelCourtsTab */,
 				AE7EBFE62FCDD23C00390101 /* Assets.xcassets */,
 				AE2E01572FCB20530084C4C8 /* Products */,
 			);
@@ -113,6 +97,7 @@
 			packageProductDependencies = (
 				AE7EC0212FCDDF9000390101 /* CoreNavigation */,
 				AE7EC0322FCDF45000390101 /* CoreUI */,
+				AE841EAA2FCDFEC1000DEC18 /* PresentationLayer */,
 			);
 			productName = PadelFinder;
 			productReference = AE2E01562FCB20530084C4C8 /* PadelFinder.app */;
@@ -145,6 +130,7 @@
 			packageReferences = (
 				AE7EC0202FCDDF9000390101 /* XCLocalSwiftPackageReference "CoreNavigation" */,
 				AE7EC0312FCDF45000390101 /* XCLocalSwiftPackageReference "CoreUI" */,
+				AE841EA92FCDFEC1000DEC18 /* XCLocalSwiftPackageReference "PresentationLayer" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = AE2E01572FCB20530084C4C8 /* Products */;
@@ -397,6 +383,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = CoreUI;
 		};
+		AE841EA92FCDFEC1000DEC18 /* XCLocalSwiftPackageReference "PresentationLayer" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = PresentationLayer;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -407,6 +397,10 @@
 		AE7EC0322FCDF45000390101 /* CoreUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CoreUI;
+		};
+		AE841EAA2FCDFEC1000DEC18 /* PresentationLayer */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PresentationLayer;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

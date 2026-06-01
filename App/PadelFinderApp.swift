@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import PresentationLayer
 
 @main
 struct PadelFinderApp: App {
+    // TODO: - register domain and data objects
+    
     var body: some Scene {
         WindowGroup {
             PadelCourtsTabFlowView()

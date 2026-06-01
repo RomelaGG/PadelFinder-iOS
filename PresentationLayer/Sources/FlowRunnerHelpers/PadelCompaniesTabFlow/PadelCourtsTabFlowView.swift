@@ -8,11 +8,13 @@
 import SwiftUI
 import CoreNavigation
 
-struct PadelCourtsTabFlowView: View {
+public struct PadelCourtsTabFlowView: View {
     @StateObject private var navigator = Navigator<PadelCourtsTabNavigatorDestination>()
     private var factory = PadelCourtsTabFlowRunnerFactory()
     
-    var body: some View {
+    public init() { }
+    
+    public var body: some View {
         factory.makeView(navigator: navigator)
     }
 }
