@@ -11,6 +11,7 @@
 		AE7EC0222FCDDF9000390101 /* CoreNavigation in Frameworks */ = {isa = PBXBuildFile; productRef = AE7EC0212FCDDF9000390101 /* CoreNavigation */; };
 		AE7EC0302FCDF45000390101 /* CoreUI in Frameworks */ = {isa = PBXBuildFile; productRef = AE7EC0322FCDF45000390101 /* CoreUI */; };
 		AE841EAB2FCDFEC1000DEC18 /* PresentationLayer in Frameworks */ = {isa = PBXBuildFile; productRef = AE841EAA2FCDFEC1000DEC18 /* PresentationLayer */; };
+		AE841EAE2FCE0C55000DEC18 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = AE841EAD2FCE0C55000DEC18 /* Swinject */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +52,7 @@
 				AE7EC0222FCDDF9000390101 /* CoreNavigation in Frameworks */,
 				AE841EAB2FCDFEC1000DEC18 /* PresentationLayer in Frameworks */,
 				AE7EC0302FCDF45000390101 /* CoreUI in Frameworks */,
+				AE841EAE2FCE0C55000DEC18 /* Swinject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,6 +100,7 @@
 				AE7EC0212FCDDF9000390101 /* CoreNavigation */,
 				AE7EC0322FCDF45000390101 /* CoreUI */,
 				AE841EAA2FCDFEC1000DEC18 /* PresentationLayer */,
+				AE841EAD2FCE0C55000DEC18 /* Swinject */,
 			);
 			productName = PadelFinder;
 			productReference = AE2E01562FCB20530084C4C8 /* PadelFinder.app */;
@@ -131,6 +134,7 @@
 				AE7EC0202FCDDF9000390101 /* XCLocalSwiftPackageReference "CoreNavigation" */,
 				AE7EC0312FCDF45000390101 /* XCLocalSwiftPackageReference "CoreUI" */,
 				AE841EA92FCDFEC1000DEC18 /* XCLocalSwiftPackageReference "PresentationLayer" */,
+				AE841EAC2FCE0C55000DEC18 /* XCRemoteSwiftPackageReference "Swinject" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = AE2E01572FCB20530084C4C8 /* Products */;
@@ -389,6 +393,17 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		AE841EAC2FCE0C55000DEC18 /* XCRemoteSwiftPackageReference "Swinject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Swinject/Swinject";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.10.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		AE7EC0212FCDDF9000390101 /* CoreNavigation */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -401,6 +416,11 @@
 		AE841EAA2FCDFEC1000DEC18 /* PresentationLayer */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = PresentationLayer;
+		};
+		AE841EAD2FCE0C55000DEC18 /* Swinject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AE841EAC2FCE0C55000DEC18 /* XCRemoteSwiftPackageReference "Swinject" */;
+			productName = Swinject;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
