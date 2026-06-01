@@ -6,14 +6,90 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		AE7EBFF82FCDD23C00390101 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE7EBFE62FCDD23C00390101 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		AE2E01562FCB20530084C4C8 /* PadelFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PadelFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE7EBFE62FCDD23C00390101 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		AE7EC01B2FCDD2A000390101 /* Exceptions for "App" folder in "PadelFinder" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				PadelFinderApp.swift,
+			);
+			target = AE2E01552FCB20530084C4C8 /* PadelFinder */;
+		};
+		AE7EC01C2FCDD2A000390101 /* Exceptions for "Navigation" folder in "PadelFinder" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				DismissNavigationPresentationAction.swift,
+				NavigationHost.swift,
+				Navigator.swift,
+				NavigatorDestination.swift,
+			);
+			target = AE2E01552FCB20530084C4C8 /* PadelFinder */;
+		};
+		AE7EC01D2FCDD2A000390101 /* Exceptions for "PadelCourtsTab" folder in "PadelFinder" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				FlowRunnnerHelpers/PadelCourtsTabFlowRunnerFactory.swift,
+				FlowRunnnerHelpers/PadelCourtsTabFlowView.swift,
+				FlowRunnnerHelpers/PadelCourtsTabNavigatorDestination.swift,
+				Screen/PadelCompaniesView.swift,
+				Screen/PadelCompaniesViewModel.swift,
+			);
+			target = AE2E01552FCB20530084C4C8 /* PadelFinder */;
+		};
+		AE7EC01E2FCDD2A000390101 /* Exceptions for "UIComponents" folder in "PadelFinder" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AvailableSlotsHStack.swift,
+				CalendarHStack.swift,
+			);
+			target = AE2E01552FCB20530084C4C8 /* PadelFinder */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		AE2E01582FCB20530084C4C8 /* PadelFinder */ = {
+		AE7EBFFA2FCDD29F00390101 /* App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = PadelFinder;
+			exceptions = (
+				AE7EC01B2FCDD2A000390101 /* Exceptions for "App" folder in "PadelFinder" target */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		AE7EBFFC2FCDD29F00390101 /* DesignSystem */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+		AE7EC0012FCDD29F00390101 /* Navigation */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				AE7EC01C2FCDD2A000390101 /* Exceptions for "Navigation" folder in "PadelFinder" target */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
+		AE7EC00A2FCDD29F00390101 /* PadelCourtsTab */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				AE7EC01D2FCDD2A000390101 /* Exceptions for "PadelCourtsTab" folder in "PadelFinder" target */,
+			);
+			path = PadelCourtsTab;
+			sourceTree = "<group>";
+		};
+		AE7EC00D2FCDD29F00390101 /* UIComponents */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				AE7EC01E2FCDD2A000390101 /* Exceptions for "UIComponents" folder in "PadelFinder" target */,
+			);
+			path = UIComponents;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -32,7 +108,12 @@
 		AE2E014D2FCB20520084C4C8 = {
 			isa = PBXGroup;
 			children = (
-				AE2E01582FCB20530084C4C8 /* PadelFinder */,
+				AE7EBFFA2FCDD29F00390101 /* App */,
+				AE7EBFFC2FCDD29F00390101 /* DesignSystem */,
+				AE7EC0012FCDD29F00390101 /* Navigation */,
+				AE7EC00A2FCDD29F00390101 /* PadelCourtsTab */,
+				AE7EC00D2FCDD29F00390101 /* UIComponents */,
+				AE7EBFE62FCDD23C00390101 /* Assets.xcassets */,
 				AE2E01572FCB20530084C4C8 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -61,7 +142,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				AE2E01582FCB20530084C4C8 /* PadelFinder */,
+				AE7EBFFC2FCDD29F00390101 /* DesignSystem */,
 			);
 			name = PadelFinder;
 			packageProductDependencies = (
@@ -109,6 +190,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE7EBFF82FCDD23C00390101 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
