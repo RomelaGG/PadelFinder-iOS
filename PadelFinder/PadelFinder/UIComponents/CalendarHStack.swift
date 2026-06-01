@@ -35,7 +35,7 @@ struct CalendarHStack: View {
                     }
                 }
             }
-            .padding(.horizontal, PadelDesignTokens.Spacing.screenHorizontal)
+            .padding(.horizontal, PadelDesignTokens.Spacing.calendarHorizontalInset)
             .padding(.vertical, PadelDesignTokens.Spacing.calendarShadowVerticalInset)
         }
         .accessibilityElement(children: .contain)
