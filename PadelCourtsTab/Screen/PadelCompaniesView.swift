@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreNavigation
+import CoreUI
 
 struct PadelCompaniesView: View {
     @EnvironmentObject var navigator: Navigator<PadelCourtsTabNavigatorDestination>
