@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-protocol NavigatorDestination: Hashable {
+public protocol NavigatorDestination: Hashable {
     associatedtype DestinationView: View
 
     @ViewBuilder

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreNavigation
 
 struct PadelCourtsTabFlowView: View {
     @StateObject private var navigator = Navigator<PadelCourtsTabNavigatorDestination>()

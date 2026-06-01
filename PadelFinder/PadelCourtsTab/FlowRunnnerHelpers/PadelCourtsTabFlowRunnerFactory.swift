@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreNavigation
 
 struct PadelCourtsTabFlowRunnerFactory {
     func makeView(navigator: Navigator<PadelCourtsTabNavigatorDestination>) -> some View {

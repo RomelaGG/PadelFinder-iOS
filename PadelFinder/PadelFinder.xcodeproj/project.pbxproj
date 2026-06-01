@@ -8,11 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		AE7EBFF82FCDD23C00390101 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE7EBFE62FCDD23C00390101 /* Assets.xcassets */; };
+		AE7EC0222FCDDF9000390101 /* CoreNavigation in Frameworks */ = {isa = PBXBuildFile; productRef = AE7EC0212FCDDF9000390101 /* CoreNavigation */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		AE2E01562FCB20530084C4C8 /* PadelFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PadelFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE7EBFE62FCDD23C00390101 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AE7EC01F2FCDD6E200390101 /* CoreNavigation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CoreNavigation; path = ../CoreNavigation; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -20,16 +22,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				PadelFinderApp.swift,
-			);
-			target = AE2E01552FCB20530084C4C8 /* PadelFinder */;
-		};
-		AE7EC01C2FCDD2A000390101 /* Exceptions for "Navigation" folder in "PadelFinder" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				DismissNavigationPresentationAction.swift,
-				NavigationHost.swift,
-				Navigator.swift,
-				NavigatorDestination.swift,
 			);
 			target = AE2E01552FCB20530084C4C8 /* PadelFinder */;
 		};
@@ -68,14 +60,6 @@
 			path = DesignSystem;
 			sourceTree = "<group>";
 		};
-		AE7EC0012FCDD29F00390101 /* Navigation */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				AE7EC01C2FCDD2A000390101 /* Exceptions for "Navigation" folder in "PadelFinder" target */,
-			);
-			path = Navigation;
-			sourceTree = "<group>";
-		};
 		AE7EC00A2FCDD29F00390101 /* PadelCourtsTab */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -99,6 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE7EC0222FCDDF9000390101 /* CoreNavigation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,9 +93,9 @@
 		AE2E014D2FCB20520084C4C8 = {
 			isa = PBXGroup;
 			children = (
+				AE7EC01F2FCDD6E200390101 /* CoreNavigation */,
 				AE7EBFFA2FCDD29F00390101 /* App */,
 				AE7EBFFC2FCDD29F00390101 /* DesignSystem */,
-				AE7EC0012FCDD29F00390101 /* Navigation */,
 				AE7EC00A2FCDD29F00390101 /* PadelCourtsTab */,
 				AE7EC00D2FCDD29F00390101 /* UIComponents */,
 				AE7EBFE62FCDD23C00390101 /* Assets.xcassets */,
@@ -146,6 +131,7 @@
 			);
 			name = PadelFinder;
 			packageProductDependencies = (
+				AE7EC0212FCDDF9000390101 /* CoreNavigation */,
 			);
 			productName = PadelFinder;
 			productReference = AE2E01562FCB20530084C4C8 /* PadelFinder.app */;
@@ -175,6 +161,9 @@
 			);
 			mainGroup = AE2E014D2FCB20520084C4C8;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				AE7EC0202FCDDF9000390101 /* XCLocalSwiftPackageReference "../CoreNavigation" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = AE2E01572FCB20530084C4C8 /* Products */;
 			projectDirPath = "";
@@ -416,6 +405,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		AE7EC0202FCDDF9000390101 /* XCLocalSwiftPackageReference "../CoreNavigation" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../CoreNavigation;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AE7EC0212FCDDF9000390101 /* CoreNavigation */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreNavigation;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = AE2E014E2FCB20520084C4C8 /* Project object */;
 }

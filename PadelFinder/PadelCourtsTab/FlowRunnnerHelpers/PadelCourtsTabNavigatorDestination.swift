@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreNavigation
 
 enum PadelCourtsTabNavigatorDestination: NavigatorDestination {
     case padelCompaniesDetailsPage

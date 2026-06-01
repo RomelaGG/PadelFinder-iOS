@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct NavigationHost<RootView: View, Destination: NavigatorDestination>: View {
+public struct NavigationHost<RootView: View, Destination: NavigatorDestination>: View {
     @ObservedObject private var navigator: Navigator<Destination>
     private let rootView: () -> RootView
 
-    init(
+    public init(
         navigator: Navigator<Destination>,
         @ViewBuilder rootView: @escaping () -> RootView
     ) {
@@ -19,7 +19,7 @@ struct NavigationHost<RootView: View, Destination: NavigatorDestination>: View {
         self.rootView = rootView
     }
 
-    var body: some View {
+    public var body: some View {
         NavigationStack(path: $navigator.stack) {
             rootView()
                 .navigationDestination(for: Destination.self) { destination in

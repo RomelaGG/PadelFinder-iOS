@@ -8,9 +8,11 @@
 import Combine
 
 @MainActor
-final class Navigator<Destination: NavigatorDestination>: ObservableObject {
+public final class Navigator<Destination: NavigatorDestination>: ObservableObject {
     @Published var stack: [Destination] = []
     @Published var fullScreen: Destination?
+    
+    public init() { }
 
     var numberOfItems: Int {
         stack.count
