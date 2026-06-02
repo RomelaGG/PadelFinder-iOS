@@ -22,6 +22,7 @@
 		AE7EC02E2FCDED0400390101 /* DesignSystem */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DesignSystem; sourceTree = SOURCE_ROOT; };
 		AE841EA82FCDFC02000DEC18 /* PresentationLayer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PresentationLayer; sourceTree = "<group>"; };
 		AE841EAF2FCECEC8000DEC18 /* CoreServices */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CoreServices; sourceTree = "<group>"; };
+		AE841EB02FCED45E000DEC18 /* DomainLayer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DomainLayer; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -63,6 +64,7 @@
 		AE2E014D2FCB20520084C4C8 = {
 			isa = PBXGroup;
 			children = (
+				AE841EB02FCED45E000DEC18 /* DomainLayer */,
 				AE841EAF2FCECEC8000DEC18 /* CoreServices */,
 				AE841EA82FCDFC02000DEC18 /* PresentationLayer */,
 				AE7EC02E2FCDED0400390101 /* DesignSystem */,
