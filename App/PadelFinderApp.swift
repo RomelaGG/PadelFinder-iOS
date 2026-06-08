@@ -7,10 +7,22 @@
 
 import SwiftUI
 import PresentationLayer
+import PadelFinderCoreServices
 
 @main
 struct PadelFinderApp: App {
     // TODO: - register domain and data objects
+    
+    init() {
+        AppDependency.shared.assemble([
+            CoreServicesAssembly()
+            // DataAssembly(),
+            // DomainAssembly(),
+            // PresentationAssembly(),
+        ])
+    }
+    
+    
     
     var body: some Scene {
         WindowGroup {

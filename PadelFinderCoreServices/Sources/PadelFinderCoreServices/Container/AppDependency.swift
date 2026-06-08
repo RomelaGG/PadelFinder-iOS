@@ -18,7 +18,7 @@ public final class AppDependency: @unchecked Sendable {
         assembler = Assembler(container: container)
     }
     
-    func assemble(_ assemblies: [Assembly]) {
+    public func assemble(_ assemblies: [Assembly]) {
         assembler.apply(assemblies: assemblies)
     }
 }

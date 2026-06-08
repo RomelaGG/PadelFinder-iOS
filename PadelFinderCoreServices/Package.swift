@@ -4,13 +4,13 @@
 import PackageDescription
 
 let package = Package(
-    name: "CoreServices",
+    name: "PadelFinderCoreServices",
     platforms: [.iOS(.v16)],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "CoreServices",
-            targets: ["CoreServices"]
+            name: "PadelFinderCoreServices",
+            targets: ["PadelFinderCoreServices"]
         ),
     ],
     dependencies: [
@@ -21,12 +21,12 @@ let package = Package(
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "CoreServices",
+            name: "PadelFinderCoreServices",
             dependencies: [
                 .product(name: "Swinject", package: "Swinject"),
                 .product(name: "Alamofire", package: "Alamofire"),
-            ]
+            ],
+            path: "Sources"
         ),
-
     ]
 )
