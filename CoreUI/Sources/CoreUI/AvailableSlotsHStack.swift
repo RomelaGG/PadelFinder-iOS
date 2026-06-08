@@ -5,8 +5,8 @@
 //  Created by Giorgi Romelashvili on 01.06.26.
 //
 
-import SwiftUI
 import DesignSystem
+import SwiftUI
 
 public struct AvailableSlot: Identifiable, Hashable {
     public let id: String
@@ -48,15 +48,15 @@ public struct AvailableSlotsHStack: View {
 
     public var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: PadelDesignTokens.Spacing.availableSlotItem) {
+            HStack(spacing: PadelDesignTokens.Spacing.m) {
                 ForEach(slots) { slot in
                     AvailableSlotButton(slot: slot) {
                         onSlotSelected(slot)
                     }
                 }
             }
-            .padding(.horizontal, PadelDesignTokens.Spacing.availableSlotHorizontalInset)
-            .padding(.vertical, PadelDesignTokens.Spacing.availableSlotShadowVerticalInset)
+            .padding(.horizontal, PadelDesignTokens.Spacing.xl)
+            .padding(.vertical, PadelDesignTokens.Spacing.xs)
         }
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Available slots")
@@ -83,20 +83,20 @@ private struct AvailableSlotButton: View {
 
     private var slotLabel: some View {
         Text(slot.title)
-            .font(PadelDesignTokens.Fonts.availableSlot)
-            .strikethrough(!slot.isAvailable, color: PadelDesignTokens.Colors.slotDisabledText)
+            .font(PadelDesignTokens.Fonts.bodyStrong)
+            .strikethrough(!slot.isAvailable, color: PadelDesignTokens.Colors.textDisabled)
             .foregroundStyle(foregroundColor)
             .lineLimit(1)
             .minimumScaleFactor(0.85)
             .frame(
-                width: PadelDesignTokens.Sizing.availableSlotWidth,
-                height: PadelDesignTokens.Sizing.availableSlotHeight
+                width: PadelDesignTokens.Sizing.regularTileWidth,
+                height: PadelDesignTokens.Sizing.compactControlHeight
             )
             .background(backgroundColor)
             .clipShape(slotShape)
             .overlay {
                 slotShape
-                    .stroke(borderColor, lineWidth: PadelDesignTokens.Sizing.availableSlotBorderWidth)
+                    .stroke(borderColor, lineWidth: PadelDesignTokens.Sizing.hairline)
             }
             .contentShape(slotShape)
     }
@@ -106,18 +106,18 @@ private struct AvailableSlotButton: View {
     }
 
     private var foregroundColor: Color {
-        slot.isAvailable ? PadelDesignTokens.Colors.textPrimary : PadelDesignTokens.Colors.slotDisabledText
+        slot.isAvailable ? PadelDesignTokens.Colors.textPrimary : PadelDesignTokens.Colors.textDisabled
     }
 
     private var backgroundColor: Color {
-        slot.isAvailable ? PadelDesignTokens.Colors.surface : PadelDesignTokens.Colors.slotDisabledBackground
+        slot.isAvailable ? PadelDesignTokens.Colors.surface : PadelDesignTokens.Colors.surfaceMuted
     }
 
     private var borderColor: Color {
-        slot.isAvailable ? PadelDesignTokens.Colors.slotBorder : PadelDesignTokens.Colors.slotDisabledBorder
+        PadelDesignTokens.Colors.border
     }
 
     private var slotShape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: PadelDesignTokens.Radius.availableSlot, style: .continuous)
+        RoundedRectangle(cornerRadius: PadelDesignTokens.Radius.l, style: .continuous)
     }
 }

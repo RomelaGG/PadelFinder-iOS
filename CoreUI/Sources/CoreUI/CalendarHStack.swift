@@ -12,21 +12,24 @@ public struct CalendarHStack: View {
     @Binding var currentDate: Date
 
     private let calendar: Calendar
+    private let startDate: Date
     private let dayCount: Int
 
     public init(
         currentDate: Binding<Date>,
         calendar: Calendar = .current,
-        dayCount: Int = PadelDesignTokens.CalendarLayout.visibleDayCount
+        startDate: Date = Date(),
+        dayCount: Int = 21
     ) {
         self._currentDate = currentDate
         self.calendar = calendar
+        self.startDate = startDate
         self.dayCount = max(dayCount, 0)
     }
 
     public var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: PadelDesignTokens.Spacing.calendarItem) {
+            HStack(spacing: PadelDesignTokens.Spacing.s) {
                 ForEach(calendarDates, id: \.self) { date in
                     CalendarDayButton(
                         date: date,
@@ -36,18 +39,18 @@ public struct CalendarHStack: View {
                     }
                 }
             }
-            .padding(.horizontal, PadelDesignTokens.Spacing.calendarHorizontalInset)
-            .padding(.vertical, PadelDesignTokens.Spacing.calendarShadowVerticalInset)
+            .padding(.horizontal, PadelDesignTokens.Spacing.xl)
+            .padding(.vertical, PadelDesignTokens.Spacing.s)
         }
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Calendar")
     }
 
     private var calendarDates: [Date] {
-        let startDate = calendar.startOfDay(for: Date())
+        let firstDate = calendar.startOfDay(for: startDate)
 
         return (0..<dayCount).map { offset in
-            calendar.date(byAdding: .day, value: offset, to: startDate) ?? startDate
+            calendar.date(byAdding: .day, value: offset, to: firstDate) ?? firstDate
         }
     }
 }
@@ -59,39 +62,39 @@ private struct CalendarDayButton: View {
 
     var body: some View {
         Button(action: action) {
-            VStack(spacing: PadelDesignTokens.Spacing.calendarCellContent) {
+            VStack(spacing: PadelDesignTokens.Spacing.xxs) {
                 Text(weekdayText)
-                    .font(PadelDesignTokens.Fonts.calendarWeekday)
+                    .font(PadelDesignTokens.Fonts.footnoteStrong)
                     .foregroundStyle(secondaryForegroundColor)
                     .lineLimit(1)
 
                 Text(dayText)
-                    .font(PadelDesignTokens.Fonts.calendarDay)
+                    .font(PadelDesignTokens.Fonts.largeTitle)
                     .foregroundStyle(primaryForegroundColor)
                     .lineLimit(1)
 
                 Text(monthText)
-                    .font(PadelDesignTokens.Fonts.calendarMonth)
+                    .font(PadelDesignTokens.Fonts.captionStrong)
                     .foregroundStyle(secondaryForegroundColor)
                     .lineLimit(1)
             }
-            .padding(.vertical, PadelDesignTokens.Spacing.calendarCellVertical)
-            .padding(.horizontal, PadelDesignTokens.Spacing.calendarCellHorizontal)
+            .padding(.vertical, PadelDesignTokens.Spacing.l)
+            .padding(.horizontal, PadelDesignTokens.Spacing.m)
             .frame(
-                width: PadelDesignTokens.Sizing.calendarCellWidth,
-                height: PadelDesignTokens.Sizing.calendarCellHeight
+                width: PadelDesignTokens.Sizing.compactTileWidth,
+                height: PadelDesignTokens.Sizing.tallTileHeight
             )
             .background(backgroundColor)
-            .clipShape(calendarCellShape)
+            .clipShape(cellShape)
             .overlay {
-                calendarCellShape
-                    .stroke(borderColor, lineWidth: PadelDesignTokens.Sizing.calendarCellBorderWidth)
+                cellShape
+                    .stroke(borderColor, lineWidth: PadelDesignTokens.Sizing.hairline)
             }
             .shadow(
-                color: PadelDesignTokens.Colors.calendarCellShadow,
-                radius: PadelDesignTokens.Shadow.calendarCellRadius,
-                x: PadelDesignTokens.Shadow.calendarCellX,
-                y: PadelDesignTokens.Shadow.calendarCellY
+                color: PadelDesignTokens.Colors.shadowLow,
+                radius: PadelDesignTokens.Shadow.lowRadius,
+                x: PadelDesignTokens.Shadow.lowX,
+                y: PadelDesignTokens.Shadow.lowY
             )
         }
         .buttonStyle(.plain)
@@ -116,22 +119,22 @@ private struct CalendarDayButton: View {
     }
 
     private var primaryForegroundColor: Color {
-        isSelected ? PadelDesignTokens.Colors.selectedText : PadelDesignTokens.Colors.textPrimary
+        isSelected ? PadelDesignTokens.Colors.onAccent : PadelDesignTokens.Colors.textPrimary
     }
 
     private var secondaryForegroundColor: Color {
-        isSelected ? PadelDesignTokens.Colors.selectedText : PadelDesignTokens.Colors.textSecondary
+        isSelected ? PadelDesignTokens.Colors.onAccent : PadelDesignTokens.Colors.textSecondary
     }
 
     private var backgroundColor: Color {
-        isSelected ? PadelDesignTokens.Colors.courtGreen : PadelDesignTokens.Colors.surface
+        isSelected ? PadelDesignTokens.Colors.accent : PadelDesignTokens.Colors.surface
     }
 
     private var borderColor: Color {
-        isSelected ? PadelDesignTokens.Colors.courtGreenPressed : PadelDesignTokens.Colors.border
+        isSelected ? PadelDesignTokens.Colors.accentPressed : PadelDesignTokens.Colors.borderStrong
     }
 
-    private var calendarCellShape: RoundedRectangle {
-        RoundedRectangle(cornerRadius: PadelDesignTokens.Radius.calendarCell, style: .continuous)
+    private var cellShape: RoundedRectangle {
+        RoundedRectangle(cornerRadius: PadelDesignTokens.Radius.xxl, style: .continuous)
     }
 }
