@@ -12,6 +12,7 @@
 		AE7EC0302FCDF45000390101 /* CoreUI in Frameworks */ = {isa = PBXBuildFile; productRef = AE7EC0322FCDF45000390101 /* CoreUI */; };
 		AE841EAB2FCDFEC1000DEC18 /* PresentationLayer in Frameworks */ = {isa = PBXBuildFile; productRef = AE841EAA2FCDFEC1000DEC18 /* PresentationLayer */; };
 		AE841EAE2FCE0C55000DEC18 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = AE841EAD2FCE0C55000DEC18 /* Swinject */; };
+		AEA1098E2FD6E5CA00553C62 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = AEA1098D2FD6E5CA00553C62 /* Alamofire */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AEA1098E2FD6E5CA00553C62 /* Alamofire in Frameworks */,
 				AE7EC0222FCDDF9000390101 /* CoreNavigation in Frameworks */,
 				AE841EAB2FCDFEC1000DEC18 /* PresentationLayer in Frameworks */,
 				AE7EC0302FCDF45000390101 /* CoreUI in Frameworks */,
@@ -105,6 +107,7 @@
 				AE7EC0322FCDF45000390101 /* CoreUI */,
 				AE841EAA2FCDFEC1000DEC18 /* PresentationLayer */,
 				AE841EAD2FCE0C55000DEC18 /* Swinject */,
+				AEA1098D2FD6E5CA00553C62 /* Alamofire */,
 			);
 			productName = PadelFinder;
 			productReference = AE2E01562FCB20530084C4C8 /* PadelFinder.app */;
@@ -139,6 +142,7 @@
 				AE7EC0312FCDF45000390101 /* XCLocalSwiftPackageReference "CoreUI" */,
 				AE841EA92FCDFEC1000DEC18 /* XCLocalSwiftPackageReference "PresentationLayer" */,
 				AE841EAC2FCE0C55000DEC18 /* XCRemoteSwiftPackageReference "Swinject" */,
+				AEA1098C2FD6E5CA00553C62 /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = AE2E01572FCB20530084C4C8 /* Products */;
@@ -406,6 +410,14 @@
 				minimumVersion = 2.10.0;
 			};
 		};
+		AEA1098C2FD6E5CA00553C62 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.12.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -425,6 +437,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = AE841EAC2FCE0C55000DEC18 /* XCRemoteSwiftPackageReference "Swinject" */;
 			productName = Swinject;
+		};
+		AEA1098D2FD6E5CA00553C62 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AEA1098C2FD6E5CA00553C62 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

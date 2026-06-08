@@ -14,7 +14,8 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/Swinject/Swinject.git", from: "2.10.0")
+        .package(url: "https://github.com/Swinject/Swinject.git", from: "2.10.0"),
+        .package(url: "https://github.com/Alamofire/Alamofire.git", from: "5.12.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -22,7 +23,8 @@ let package = Package(
         .target(
             name: "CoreServices",
             dependencies: [
-                .product(name: "Swinject", package: "Swinject")
+                .product(name: "Swinject", package: "Swinject"),
+                .product(name: "Alamofire", package: "Alamofire"),
             ]
         ),
 

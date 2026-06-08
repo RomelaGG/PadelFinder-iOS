@@ -7,7 +7,7 @@
 
 import Swinject
 
-public final class AppDependency {
+public final class AppDependency: @unchecked Sendable {
     public static let shared = AppDependency()
     
     public let container: Container
