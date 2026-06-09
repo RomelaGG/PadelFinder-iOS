@@ -17,6 +17,7 @@ struct PadelCompaniesView: View {
     @StateObject var viewModel: PadelCompaniesViewModel
     @State private var currentDate: Date
     @State private var searchText = ""
+    @FocusState private var searchFieldFocusState: Bool
 
     init(viewModel: PadelCompaniesViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
@@ -28,7 +29,7 @@ struct PadelCompaniesView: View {
             VStack(alignment: .leading, spacing: PadelDesignTokens.Spacing.xxxl) {
                 header
 
-                PadelSearchField(text: $searchText)
+                PadelSearchField(text: $searchText, isFocused: $searchFieldFocusState)
 
                 CalendarHStack(
                     currentDate: $currentDate,
@@ -45,6 +46,7 @@ struct PadelCompaniesView: View {
                     .padding(.horizontal, PadelDesignTokens.Spacing.xxxl)
                     .padding(.bottom, PadelDesignTokens.Spacing.xxxl)
             }
+            .scrollDismissesKeyboard(.interactively)
         }
         .background(PadelDesignTokens.Colors.background.ignoresSafeArea())
         .toolbar(.hidden, for: .navigationBar)
@@ -53,6 +55,11 @@ struct PadelCompaniesView: View {
         }
         .onChange(of: currentDate) { newDate in
             viewModel.handleIntent(.loadAvailability(newDate))
+        }
+        .onTapGesture {
+            withAnimation {
+                searchFieldFocusState = false
+            }
         }
     }
 }

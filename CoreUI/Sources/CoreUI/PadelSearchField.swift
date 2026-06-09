@@ -12,13 +12,16 @@ public struct PadelSearchField: View {
     @Binding private var text: String
 
     private let placeholder: String
+    private let isFocused: FocusState<Bool>.Binding?
 
     public init(
         text: Binding<String>,
-        placeholder: String = "Search clubs or area"
+        placeholder: String = "Search clubs or area",
+        isFocused: FocusState<Bool>.Binding? = nil
     ) {
         self._text = text
         self.placeholder = placeholder
+        self.isFocused = isFocused
     }
 
     public var body: some View {
@@ -28,18 +31,7 @@ public struct PadelSearchField: View {
                 .foregroundStyle(PadelDesignTokens.Colors.textSecondary)
                 .accessibilityHidden(true)
 
-            TextField(
-                "",
-                text: $text,
-                prompt: Text(placeholder)
-                    .font(PadelDesignTokens.Fonts.input)
-                    .foregroundColor(PadelDesignTokens.Colors.textSecondary)
-            )
-                .font(PadelDesignTokens.Fonts.input)
-                .foregroundStyle(PadelDesignTokens.Colors.textPrimary)
-                .tint(PadelDesignTokens.Colors.textPrimary)
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled()
+            searchTextField
 
             if !text.isEmpty {
                 Button {
@@ -65,5 +57,30 @@ public struct PadelSearchField: View {
 
     private var shape: RoundedRectangle {
         RoundedRectangle(cornerRadius: PadelDesignTokens.Radius.xl, style: .continuous)
+    }
+
+    @ViewBuilder
+    private var searchTextField: some View {
+        if let isFocused {
+            textField
+                .focused(isFocused)
+        } else {
+            textField
+        }
+    }
+
+    private var textField: some View {
+        TextField(
+            "",
+            text: $text,
+            prompt: Text(placeholder)
+                .font(PadelDesignTokens.Fonts.input)
+                .foregroundColor(PadelDesignTokens.Colors.textSecondary)
+        )
+        .font(PadelDesignTokens.Fonts.input)
+        .foregroundStyle(PadelDesignTokens.Colors.textPrimary)
+        .tint(PadelDesignTokens.Colors.textPrimary)
+        .textInputAutocapitalization(.never)
+        .autocorrectionDisabled()
     }
 }

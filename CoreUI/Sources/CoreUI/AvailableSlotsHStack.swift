@@ -58,6 +58,7 @@ public struct AvailableSlotsHStack: View {
             .padding(.horizontal, PadelDesignTokens.Spacing.xl)
             .padding(.vertical, PadelDesignTokens.Spacing.xs)
         }
+        .scrollDismissesKeyboard(.interactively)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Available slots")
     }
