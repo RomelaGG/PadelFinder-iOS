@@ -8,25 +8,25 @@
 import SwiftUI
 import PresentationLayer
 import PadelFinderCoreServices
+import DataLayer
+import DomainLayer
 
 @main
 struct PadelFinderApp: App {
-    // TODO: - register domain and data objects
+    private let fetchAvailabilityUseCase: any FetchAvailabilityUseCaseProtocol
     
     init() {
         AppDependency.shared.assemble([
-            CoreServicesAssembly()
-            // DataAssembly(),
-            // DomainAssembly(),
-            // PresentationAssembly(),
+            CoreServicesAssembly(),
+            DataAssembly()
         ])
+
+        fetchAvailabilityUseCase = AppDependency.shared.resolve(FetchAvailabilityUseCaseProtocol.self)
     }
-    
-    
     
     var body: some Scene {
         WindowGroup {
-            PadelCourtsTabFlowView()
+            PadelCourtsTabFlowView(fetchAvailabilityUseCase: fetchAvailabilityUseCase)
         }
     }
 }

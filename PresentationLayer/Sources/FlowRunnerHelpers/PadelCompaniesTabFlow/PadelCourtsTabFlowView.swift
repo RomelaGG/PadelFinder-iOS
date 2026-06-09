@@ -7,12 +7,17 @@
 
 import SwiftUI
 import CoreNavigation
+import DomainLayer
 
 public struct PadelCourtsTabFlowView: View {
     @StateObject private var navigator = Navigator<PadelCourtsTabNavigatorDestination>()
-    private var factory = PadelCourtsTabFlowRunnerFactory()
+    private let factory: PadelCourtsTabFlowRunnerFactory
     
-    public init() { }
+    public init(fetchAvailabilityUseCase: any FetchAvailabilityUseCaseProtocol) {
+        self.factory = PadelCourtsTabFlowRunnerFactory(
+            fetchAvailabilityUseCase: fetchAvailabilityUseCase
+        )
+    }
     
     public var body: some View {
         factory.makeView(navigator: navigator)

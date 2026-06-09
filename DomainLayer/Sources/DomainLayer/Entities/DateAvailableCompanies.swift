@@ -5,7 +5,7 @@
 //  Created by Giorgi Romelashvili on 02.06.26.
 //
 
-public struct DateCheckAvailability {
+public struct DateCheckAvailability: Sendable {
     public let date: String
     
     public init(date: String) {

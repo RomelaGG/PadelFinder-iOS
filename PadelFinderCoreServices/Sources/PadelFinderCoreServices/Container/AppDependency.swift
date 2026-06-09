@@ -21,6 +21,13 @@ public final class AppDependency: @unchecked Sendable {
     public func assemble(_ assemblies: [Assembly]) {
         assembler.apply(assemblies: assemblies)
     }
+    
+    public func resolve<T>(_ type: T.Type = T.self) -> T {
+        guard let dependency = container.resolve(T.self) else {
+            fatalError("Could not resolve dependency: \(T.self)")
+        }
+        return dependency
+    }
 }
 
 @propertyWrapper

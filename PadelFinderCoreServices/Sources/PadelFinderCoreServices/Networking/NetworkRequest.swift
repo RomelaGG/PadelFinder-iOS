@@ -10,6 +10,12 @@ import Foundation
 
 // MARK: - Supporting Types
 
+public enum AppConfig {
+    public static let baseURL = "http://127.0.0.1:8080"
+    public static let authURL = "http://127.0.0.1:8080"
+    public static let cdnURL = "http://127.0.0.1:8080"
+}
+
 public enum BaseURLType {
     case `default`
     case auth
@@ -17,9 +23,9 @@ public enum BaseURLType {
 
     public var url: String {
         switch self {
-        case .default: return "AppConfig.baseURL"
-        case .auth:    return "AppConfig.authURL"
-        case .cdn:     return "AppConfig.cdnURL"
+        case .default: return AppConfig.baseURL
+        case .auth:    return AppConfig.authURL
+        case .cdn:     return AppConfig.cdnURL
         }
     }
 }

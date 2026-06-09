@@ -12,6 +12,8 @@
 		AE7EC0302FCDF45000390101 /* CoreUI in Frameworks */ = {isa = PBXBuildFile; productRef = AE7EC0322FCDF45000390101 /* CoreUI */; };
 		AE841EAB2FCDFEC1000DEC18 /* PresentationLayer in Frameworks */ = {isa = PBXBuildFile; productRef = AE841EAA2FCDFEC1000DEC18 /* PresentationLayer */; };
 		AE841EAE2FCE0C55000DEC18 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = AE841EAD2FCE0C55000DEC18 /* Swinject */; };
+		AEF000012FD7000000000001 /* DomainLayer in Frameworks */ = {isa = PBXBuildFile; productRef = AEF000052FD7000000000005 /* DomainLayer */; };
+		AEF000022FD7000000000002 /* DataLayer in Frameworks */ = {isa = PBXBuildFile; productRef = AEF000062FD7000000000006 /* DataLayer */; };
 		AEA1098E2FD6E5CA00553C62 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = AEA1098D2FD6E5CA00553C62 /* Alamofire */; };
 		AEA109912FD6F5E100553C62 /* PadelFinderCoreServices in Frameworks */ = {isa = PBXBuildFile; productRef = AEA109902FD6F5E100553C62 /* PadelFinderCoreServices */; };
 /* End PBXBuildFile section */
@@ -25,6 +27,7 @@
 		AE841EA82FCDFC02000DEC18 /* PresentationLayer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PresentationLayer; sourceTree = "<group>"; };
 		AE841EAF2FCECEC8000DEC18 /* PadelFinderCoreServices */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PadelFinderCoreServices; sourceTree = "<group>"; };
 		AE841EB02FCED45E000DEC18 /* DomainLayer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DomainLayer; sourceTree = "<group>"; };
+		AEA109982FD6FE9C00553C62 /* DataLayer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DataLayer; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -54,6 +57,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				AEA1098E2FD6E5CA00553C62 /* Alamofire in Frameworks */,
+				AEF000022FD7000000000002 /* DataLayer in Frameworks */,
+				AEF000012FD7000000000001 /* DomainLayer in Frameworks */,
 				AEA109912FD6F5E100553C62 /* PadelFinderCoreServices in Frameworks */,
 				AE7EC0222FCDDF9000390101 /* CoreNavigation in Frameworks */,
 				AE841EAB2FCDFEC1000DEC18 /* PresentationLayer in Frameworks */,
@@ -68,6 +73,7 @@
 		AE2E014D2FCB20520084C4C8 = {
 			isa = PBXGroup;
 			children = (
+				AEA109982FD6FE9C00553C62 /* DataLayer */,
 				AE841EB02FCED45E000DEC18 /* DomainLayer */,
 				AE841EAF2FCECEC8000DEC18 /* PadelFinderCoreServices */,
 				AE841EA82FCDFC02000DEC18 /* PresentationLayer */,
@@ -108,6 +114,8 @@
 				AE7EC0212FCDDF9000390101 /* CoreNavigation */,
 				AE7EC0322FCDF45000390101 /* CoreUI */,
 				AE841EAA2FCDFEC1000DEC18 /* PresentationLayer */,
+				AEF000052FD7000000000005 /* DomainLayer */,
+				AEF000062FD7000000000006 /* DataLayer */,
 				AE841EAD2FCE0C55000DEC18 /* Swinject */,
 				AEA1098D2FD6E5CA00553C62 /* Alamofire */,
 				AEA109902FD6F5E100553C62 /* PadelFinderCoreServices */,
@@ -144,6 +152,8 @@
 				AE7EC0202FCDDF9000390101 /* XCLocalSwiftPackageReference "CoreNavigation" */,
 				AE7EC0312FCDF45000390101 /* XCLocalSwiftPackageReference "CoreUI" */,
 				AE841EA92FCDFEC1000DEC18 /* XCLocalSwiftPackageReference "PresentationLayer" */,
+				AEF000032FD7000000000003 /* XCLocalSwiftPackageReference "DomainLayer" */,
+				AEF000042FD7000000000004 /* XCLocalSwiftPackageReference "DataLayer" */,
 				AE841EAC2FCE0C55000DEC18 /* XCRemoteSwiftPackageReference "Swinject" */,
 				AEA1098C2FD6E5CA00553C62 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				AEA1098F2FD6F5E100553C62 /* XCLocalSwiftPackageReference "PadelFinderCoreServices" */,
@@ -310,7 +320,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = UFS5XAX3H6;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = PadelFinderInfo.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -343,7 +354,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = UFS5XAX3H6;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = PadelFinderInfo.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -403,6 +415,14 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = PresentationLayer;
 		};
+		AEF000032FD7000000000003 /* XCLocalSwiftPackageReference "DomainLayer" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = DomainLayer;
+		};
+		AEF000042FD7000000000004 /* XCLocalSwiftPackageReference "DataLayer" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = DataLayer;
+		};
 		AEA1098F2FD6F5E100553C62 /* XCLocalSwiftPackageReference "PadelFinderCoreServices" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = PadelFinderCoreServices;
@@ -440,6 +460,14 @@
 		AE841EAA2FCDFEC1000DEC18 /* PresentationLayer */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = PresentationLayer;
+		};
+		AEF000052FD7000000000005 /* DomainLayer */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DomainLayer;
+		};
+		AEF000062FD7000000000006 /* DataLayer */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DataLayer;
 		};
 		AE841EAD2FCE0C55000DEC18 /* Swinject */ = {
 			isa = XCSwiftPackageProductDependency;

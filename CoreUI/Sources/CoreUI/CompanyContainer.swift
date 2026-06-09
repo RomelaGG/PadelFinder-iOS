@@ -178,18 +178,15 @@ private extension CompanyContainer {
 
     var metadataLine: some View {
         HStack(spacing: PadelDesignTokens.Spacing.m) {
-            Text(address)
-                .foregroundStyle(PadelDesignTokens.Colors.textSecondary)
+            ForEach(Array(metadataItems.enumerated()), id: \.offset) { index, item in
+                if index > 0 {
+                    metadataSeparator
+                }
 
-            metadataSeparator
+                Text(item)
+                    .foregroundStyle(metadataColor(for: item))
+            }
 
-            Text(distance)
-                .foregroundStyle(PadelDesignTokens.Colors.textSecondary)
-
-            metadataSeparator
-
-            Text(slotsCountText)
-                .foregroundStyle(PadelDesignTokens.Colors.accent)
         }
         .font(PadelDesignTokens.Fonts.body)
         .lineLimit(1)
@@ -201,8 +198,20 @@ private extension CompanyContainer {
             .foregroundStyle(PadelDesignTokens.Colors.textSecondary)
     }
 
+    var metadataItems: [String] {
+        [address, distance, slotsCountText].filter {
+            !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        }
+    }
+
+    func metadataColor(for item: String) -> Color {
+        item == slotsCountText
+            ? PadelDesignTokens.Colors.accent
+            : PadelDesignTokens.Colors.textSecondary
+    }
+
     var accessibilityLabel: String {
-        "\(companyName), \(address), \(distance), \(slotsCountText)"
+        ([companyName] + metadataItems).joined(separator: ", ")
     }
 
     var slotsCountText: String {

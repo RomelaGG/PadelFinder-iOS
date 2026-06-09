@@ -16,7 +16,8 @@ let package = Package(
     dependencies: [
         .package(name: "CoreUI", path: "../CoreUI"),
         .package(name: "DesignSystem", path: "../DesignSystem"),
-        .package(name: "CoreNavigation", path: "../CoreNavigation")
+        .package(name: "CoreNavigation", path: "../CoreNavigation"),
+        .package(name: "DomainLayer", path: "../DomainLayer")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -26,7 +27,8 @@ let package = Package(
             dependencies: [
                 .product(name: "CoreUI", package: "CoreUI"),
                 .product(name: "DesignSystem", package: "DesignSystem"),
-                .product(name: "CoreNavigation", package: "CoreNavigation")
+                .product(name: "CoreNavigation", package: "CoreNavigation"),
+                .product(name: "DomainLayer", package: "DomainLayer")
             ]
         ),
 
