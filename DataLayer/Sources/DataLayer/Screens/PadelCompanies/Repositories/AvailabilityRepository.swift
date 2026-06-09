@@ -6,16 +6,14 @@
 //
 
 import DomainLayer
+import CoreDI
 
 final class AvailabilityRepository: AvailabilityRepositoryProtocol, @unchecked Sendable {
-    private let remoteDataSource: any AvailabilityRemoteDataSourceProtocol
-
-    init(remoteDataSource: any AvailabilityRemoteDataSourceProtocol) {
-        self.remoteDataSource = remoteDataSource
-    }
+    @Injected private var remoteDataSource: any AvailabilityRemoteDataSourceProtocol
+    @Injected private var mapper: any AvailabilityMapperProtocol
 
     func fetchAvailability(date: String) async throws -> [PadelCompany] {
         let response = try await remoteDataSource.fetchAvailability(date: date)
-        return AvailabilityMapper.map(response)
+        return mapper.map(response)
     }
 }

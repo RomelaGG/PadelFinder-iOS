@@ -13,17 +13,18 @@ public struct DataAssembly: Assembly {
     public init() {}
 
     public func assemble(container: Container) {
+        container.register(AvailabilityMapperProtocol.self) { _ in
+            AvailabilityMapper()
+        }
+        .inObjectScope(.container)
+
         container.register(AvailabilityRemoteDataSourceProtocol.self) { _ in
             AvailabilityRemoteDataSource()
         }
         .inObjectScope(.container)
 
-        container.register(AvailabilityRepositoryProtocol.self) { resolver in
-            guard let remoteDataSource = resolver.resolve(AvailabilityRemoteDataSourceProtocol.self) else {
-                fatalError("Could not resolve dependency: \(AvailabilityRemoteDataSourceProtocol.self)")
-            }
-
-            return AvailabilityRepository(remoteDataSource: remoteDataSource)
+        container.register(AvailabilityRepositoryProtocol.self) { _ in
+            AvailabilityRepository()
         }
         .inObjectScope(.container)
     }

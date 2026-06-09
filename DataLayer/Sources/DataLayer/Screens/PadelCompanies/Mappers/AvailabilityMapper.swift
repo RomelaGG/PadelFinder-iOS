@@ -7,8 +7,12 @@
 
 import DomainLayer
 
-enum AvailabilityMapper {
-    static func map(_ response: AvailabilityResponseDTO) -> [PadelCompany] {
+protocol AvailabilityMapperProtocol: Sendable {
+    func map(_ response: AvailabilityResponseDTO) -> [PadelCompany]
+}
+
+struct AvailabilityMapper: AvailabilityMapperProtocol, Sendable {
+    func map(_ response: AvailabilityResponseDTO) -> [PadelCompany] {
         response.companies.map { company in
             PadelCompany(
                 companyName: company.name,
@@ -19,7 +23,7 @@ enum AvailabilityMapper {
         }
     }
 
-    private static func mapCourt(_ court: AvailabilityCourtDTO) -> PadelCourt {
+    private func mapCourt(_ court: AvailabilityCourtDTO) -> PadelCourt {
         PadelCourt(
             courtName: court.name,
             id: court.id,
@@ -30,7 +34,7 @@ enum AvailabilityMapper {
         )
     }
 
-    private static func mapTimeSlot(_ slot: AvailabilityTimeSlotDTO) -> TimeSlot {
+    private func mapTimeSlot(_ slot: AvailabilityTimeSlotDTO) -> TimeSlot {
         TimeSlot(
             startingTime: slot.time,
             availability: slot.isBookable ?? (slot.status == "available")
