@@ -31,14 +31,14 @@ public final class AppDependency: @unchecked Sendable {
 }
 
 @propertyWrapper
-struct Injected<T> {
+public struct Injected<T>: @unchecked Sendable {
     private let container: Container
     
-    init() {
+    public init() {
         self.container = AppDependency.shared.container
     }
     
-    var wrappedValue: T {
+    public var wrappedValue: T {
         get {
             guard let resolved = container.resolve(T.self) else {
                 fatalError("Could not resolve dependency: \(T.self)")

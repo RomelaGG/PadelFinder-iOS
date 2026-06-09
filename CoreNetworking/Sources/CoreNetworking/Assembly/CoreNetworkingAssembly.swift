@@ -1,13 +1,13 @@
 //
-//  CoreServicesAssembly.swift
-//  CoreServices
+//  CoreNetworkingAssembly.swift
+//  CoreNetworking
 //
-//  Created by Giorgi Romelashvili on 08.06.26.
+//  Created by Giorgi Romelashvili on 09.06.26.
 //
 
 import Swinject
 
-public struct CoreServicesAssembly: Assembly {
+public struct CoreNetworkingAssembly: Assembly {
     
     public init() {}
     
@@ -17,3 +17,4 @@ public struct CoreServicesAssembly: Assembly {
         }.inObjectScope(.container)
     }
 }
+

@@ -6,7 +6,6 @@
 //
 
 import DomainLayer
-import PadelFinderCoreServices
 import Swinject
 
 public struct DataAssembly: Assembly {
@@ -14,12 +13,8 @@ public struct DataAssembly: Assembly {
     public init() {}
 
     public func assemble(container: Container) {
-        container.register(AvailabilityRemoteDataSourceProtocol.self) { resolver in
-            guard let networkManager = resolver.resolve(NetworkManager.self) else {
-                fatalError("Could not resolve dependency: \(NetworkManager.self)")
-            }
-
-            return AvailabilityRemoteDataSource(networkManager: networkManager)
+        container.register(AvailabilityRemoteDataSourceProtocol.self) { _ in
+            AvailabilityRemoteDataSource()
         }
         .inObjectScope(.container)
 
@@ -29,15 +24,6 @@ public struct DataAssembly: Assembly {
             }
 
             return AvailabilityRepository(remoteDataSource: remoteDataSource)
-        }
-        .inObjectScope(.container)
-
-        container.register(FetchAvailabilityUseCaseProtocol.self) { resolver in
-            guard let repository = resolver.resolve(AvailabilityRepositoryProtocol.self) else {
-                fatalError("Could not resolve dependency: \(AvailabilityRepositoryProtocol.self)")
-            }
-
-            return FetchAvailabilityUseCase(repository: repository)
         }
         .inObjectScope(.container)
     }

@@ -11,15 +11,10 @@ import DomainLayer
 
 public struct PadelCourtsTabFlowView: View {
     @StateObject private var navigator = Navigator<PadelCourtsTabNavigatorDestination>()
-    private let factory: PadelCourtsTabFlowRunnerFactory
     
-    public init(fetchAvailabilityUseCase: any FetchAvailabilityUseCaseProtocol) {
-        self.factory = PadelCourtsTabFlowRunnerFactory(
-            fetchAvailabilityUseCase: fetchAvailabilityUseCase
-        )
-    }
+    public init() { }
     
     public var body: some View {
-        factory.makeView(navigator: navigator)
+        PadelCourtsTabFlowRunnerFactory().makeView(navigator: navigator)
     }
 }

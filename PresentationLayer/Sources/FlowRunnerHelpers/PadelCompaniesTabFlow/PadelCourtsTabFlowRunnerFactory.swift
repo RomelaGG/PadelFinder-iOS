@@ -9,20 +9,11 @@ import SwiftUI
 import CoreNavigation
 import DomainLayer
 
+@MainActor
 struct PadelCourtsTabFlowRunnerFactory {
-    private let fetchAvailabilityUseCase: any FetchAvailabilityUseCaseProtocol
-
-    init(fetchAvailabilityUseCase: any FetchAvailabilityUseCaseProtocol) {
-        self.fetchAvailabilityUseCase = fetchAvailabilityUseCase
-    }
-
     func makeView(navigator: Navigator<PadelCourtsTabNavigatorDestination>) -> some View {
         NavigationHost(navigator: navigator) {
-            PadelCompaniesView(
-                viewModel: .init(
-                    state: .init(),
-                    fetchAvailabilityUseCase: fetchAvailabilityUseCase
-                )
+            PadelCompaniesView(viewModel: .init(state: .init())
             )
         }
     }

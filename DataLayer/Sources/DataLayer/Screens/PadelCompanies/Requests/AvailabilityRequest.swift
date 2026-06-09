@@ -6,7 +6,7 @@
 //
 
 import Alamofire
-import PadelFinderCoreServices
+import CoreNetworking
 
 struct AvailabilityRequest: NetworkRequest {
     typealias Response = AvailabilityResponseDTO

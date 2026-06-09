@@ -12,10 +12,12 @@
 		AE7EC0302FCDF45000390101 /* CoreUI in Frameworks */ = {isa = PBXBuildFile; productRef = AE7EC0322FCDF45000390101 /* CoreUI */; };
 		AE841EAB2FCDFEC1000DEC18 /* PresentationLayer in Frameworks */ = {isa = PBXBuildFile; productRef = AE841EAA2FCDFEC1000DEC18 /* PresentationLayer */; };
 		AE841EAE2FCE0C55000DEC18 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = AE841EAD2FCE0C55000DEC18 /* Swinject */; };
+		AEA1098E2FD6E5CA00553C62 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = AEA1098D2FD6E5CA00553C62 /* Alamofire */; };
+		AEA1099F2FD82F4100553C62 /* CoreDI in Frameworks */ = {isa = PBXBuildFile; productRef = AEA1099E2FD82F4100553C62 /* CoreDI */; };
+		AEA109A22FD8308500553C62 /* CoreNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = AEA109A12FD8308500553C62 /* CoreNetworking */; };
+		AEA109A52FD8317400553C62 /* CoreNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = AEA109A42FD8317400553C62 /* CoreNetworking */; };
 		AEF000012FD7000000000001 /* DomainLayer in Frameworks */ = {isa = PBXBuildFile; productRef = AEF000052FD7000000000005 /* DomainLayer */; };
 		AEF000022FD7000000000002 /* DataLayer in Frameworks */ = {isa = PBXBuildFile; productRef = AEF000062FD7000000000006 /* DataLayer */; };
-		AEA1098E2FD6E5CA00553C62 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = AEA1098D2FD6E5CA00553C62 /* Alamofire */; };
-		AEA109912FD6F5E100553C62 /* PadelFinderCoreServices in Frameworks */ = {isa = PBXBuildFile; productRef = AEA109902FD6F5E100553C62 /* PadelFinderCoreServices */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,9 +27,10 @@
 		AE7EC0232FCDEBB500390101 /* CoreUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CoreUI; sourceTree = SOURCE_ROOT; };
 		AE7EC02E2FCDED0400390101 /* DesignSystem */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DesignSystem; sourceTree = SOURCE_ROOT; };
 		AE841EA82FCDFC02000DEC18 /* PresentationLayer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PresentationLayer; sourceTree = "<group>"; };
-		AE841EAF2FCECEC8000DEC18 /* PadelFinderCoreServices */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PadelFinderCoreServices; sourceTree = "<group>"; };
 		AE841EB02FCED45E000DEC18 /* DomainLayer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DomainLayer; sourceTree = "<group>"; };
 		AEA109982FD6FE9C00553C62 /* DataLayer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DataLayer; sourceTree = "<group>"; };
+		AEA1099B2FD82C6A00553C62 /* CoreDI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CoreDI; sourceTree = "<group>"; };
+		AEA1099C2FD82C9E00553C62 /* CoreNetworking */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CoreNetworking; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -59,8 +62,10 @@
 				AEA1098E2FD6E5CA00553C62 /* Alamofire in Frameworks */,
 				AEF000022FD7000000000002 /* DataLayer in Frameworks */,
 				AEF000012FD7000000000001 /* DomainLayer in Frameworks */,
-				AEA109912FD6F5E100553C62 /* PadelFinderCoreServices in Frameworks */,
 				AE7EC0222FCDDF9000390101 /* CoreNavigation in Frameworks */,
+				AEA1099F2FD82F4100553C62 /* CoreDI in Frameworks */,
+				AEA109A52FD8317400553C62 /* CoreNetworking in Frameworks */,
+				AEA109A22FD8308500553C62 /* CoreNetworking in Frameworks */,
 				AE841EAB2FCDFEC1000DEC18 /* PresentationLayer in Frameworks */,
 				AE7EC0302FCDF45000390101 /* CoreUI in Frameworks */,
 				AE841EAE2FCE0C55000DEC18 /* Swinject in Frameworks */,
@@ -73,9 +78,10 @@
 		AE2E014D2FCB20520084C4C8 = {
 			isa = PBXGroup;
 			children = (
+				AEA1099C2FD82C9E00553C62 /* CoreNetworking */,
+				AEA1099B2FD82C6A00553C62 /* CoreDI */,
 				AEA109982FD6FE9C00553C62 /* DataLayer */,
 				AE841EB02FCED45E000DEC18 /* DomainLayer */,
-				AE841EAF2FCECEC8000DEC18 /* PadelFinderCoreServices */,
 				AE841EA82FCDFC02000DEC18 /* PresentationLayer */,
 				AE7EC02E2FCDED0400390101 /* DesignSystem */,
 				AE7EC0232FCDEBB500390101 /* CoreUI */,
@@ -118,7 +124,9 @@
 				AEF000062FD7000000000006 /* DataLayer */,
 				AE841EAD2FCE0C55000DEC18 /* Swinject */,
 				AEA1098D2FD6E5CA00553C62 /* Alamofire */,
-				AEA109902FD6F5E100553C62 /* PadelFinderCoreServices */,
+				AEA1099E2FD82F4100553C62 /* CoreDI */,
+				AEA109A12FD8308500553C62 /* CoreNetworking */,
+				AEA109A42FD8317400553C62 /* CoreNetworking */,
 			);
 			productName = PadelFinder;
 			productReference = AE2E01562FCB20530084C4C8 /* PadelFinder.app */;
@@ -156,7 +164,8 @@
 				AEF000042FD7000000000004 /* XCLocalSwiftPackageReference "DataLayer" */,
 				AE841EAC2FCE0C55000DEC18 /* XCRemoteSwiftPackageReference "Swinject" */,
 				AEA1098C2FD6E5CA00553C62 /* XCRemoteSwiftPackageReference "Alamofire" */,
-				AEA1098F2FD6F5E100553C62 /* XCLocalSwiftPackageReference "PadelFinderCoreServices" */,
+				AEA109A02FD8308500553C62 /* XCLocalSwiftPackageReference "CoreDI" */,
+				AEA109A32FD8317400553C62 /* XCLocalSwiftPackageReference "CoreNetworking" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = AE2E01572FCB20530084C4C8 /* Products */;
@@ -415,6 +424,14 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = PresentationLayer;
 		};
+		AEA109A02FD8308500553C62 /* XCLocalSwiftPackageReference "CoreDI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = CoreDI;
+		};
+		AEA109A32FD8317400553C62 /* XCLocalSwiftPackageReference "CoreNetworking" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = CoreNetworking;
+		};
 		AEF000032FD7000000000003 /* XCLocalSwiftPackageReference "DomainLayer" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = DomainLayer;
@@ -422,10 +439,6 @@
 		AEF000042FD7000000000004 /* XCLocalSwiftPackageReference "DataLayer" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = DataLayer;
-		};
-		AEA1098F2FD6F5E100553C62 /* XCLocalSwiftPackageReference "PadelFinderCoreServices" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = PadelFinderCoreServices;
 		};
 /* End XCLocalSwiftPackageReference section */
 
@@ -461,14 +474,6 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = PresentationLayer;
 		};
-		AEF000052FD7000000000005 /* DomainLayer */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = DomainLayer;
-		};
-		AEF000062FD7000000000006 /* DataLayer */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = DataLayer;
-		};
 		AE841EAD2FCE0C55000DEC18 /* Swinject */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = AE841EAC2FCE0C55000DEC18 /* XCRemoteSwiftPackageReference "Swinject" */;
@@ -479,9 +484,25 @@
 			package = AEA1098C2FD6E5CA00553C62 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
-		AEA109902FD6F5E100553C62 /* PadelFinderCoreServices */ = {
+		AEA1099E2FD82F4100553C62 /* CoreDI */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = PadelFinderCoreServices;
+			productName = CoreDI;
+		};
+		AEA109A12FD8308500553C62 /* CoreNetworking */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreNetworking;
+		};
+		AEA109A42FD8317400553C62 /* CoreNetworking */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreNetworking;
+		};
+		AEF000052FD7000000000005 /* DomainLayer */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DomainLayer;
+		};
+		AEF000062FD7000000000006 /* DataLayer */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DataLayer;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

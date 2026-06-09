@@ -13,11 +13,19 @@ let package = Package(
             targets: ["DomainLayer"]
         ),
     ],
+    dependencies: [
+            .package(url: "https://github.com/Swinject/Swinject.git", from: "2.10.0"),
+            .package(name: "CoreDI", path: "../CoreDI")
+        ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "DomainLayer"
+            name: "DomainLayer",
+            dependencies: [
+                .product(name: "Swinject", package: "Swinject"),
+                .product(name: "CoreDI", package: "CoreDI")
+            ]
         ),
 
     ]

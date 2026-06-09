@@ -4,19 +4,16 @@
 import PackageDescription
 
 let package = Package(
-    name: "DataLayer",
+    name: "CoreNetworking",
     platforms: [.iOS(.v16)],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "DataLayer",
-            targets: ["DataLayer"]
+            name: "CoreNetworking",
+            targets: ["CoreNetworking"]
         ),
     ],
     dependencies: [
-        .package(name: "DomainLayer", path: "../DomainLayer"),
-        .package(name: "CoreDI", path: "../CoreDI"),
-        .package(name: "CoreNetworking", path: "../CoreNetworking"),
         .package(url: "https://github.com/Swinject/Swinject.git", from: "2.10.0"),
         .package(url: "https://github.com/Alamofire/Alamofire.git", from: "5.12.0")
     ],
@@ -24,14 +21,11 @@ let package = Package(
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "DataLayer",
+            name: "CoreNetworking",
             dependencies: [
-                .product(name: "DomainLayer", package: "DomainLayer"),
-                .product(name: "CoreDI", package: "CoreDI"),
-                .product(name: "CoreNetworking", package: "CoreNetworking"),
                 .product(name: "Swinject", package: "Swinject"),
-                .product(name: "Alamofire", package: "Alamofire")
-            ]
+                .product(name: "Alamofire", package: "Alamofire"),
+            ],
         ),
 
     ]

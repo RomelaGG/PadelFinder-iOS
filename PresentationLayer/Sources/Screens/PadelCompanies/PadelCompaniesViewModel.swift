@@ -10,12 +10,17 @@ import Combine
 import CoreNavigation
 import CoreUI
 import DomainLayer
+import CoreDI
+
+// MARK: - State
 
 struct PadelCompaniesViewModelState {
     var companies: [PadelCompanyRowModel] = []
     var isLoading = false
     var errorMessage: String?
 }
+
+// MARK: - Intent
 
 enum PadelCompaniesViewModelIntent {
     case loadAvailability(Date)
@@ -39,19 +44,17 @@ struct PadelCompanyRowModel: Identifiable {
     }
 }
 
+// MARK: - ViewModel
+
 @MainActor
 final class PadelCompaniesViewModel: ObservableObject {
     @Published private(set) var state: PadelCompaniesViewModelState
 
-    private let fetchAvailabilityUseCase: any FetchAvailabilityUseCaseProtocol
+    @Injected private var fetchAvailabilityUseCase: any FetchAvailabilityUseCaseProtocol
     private var loadTask: Task<Void, Never>?
     
-    init(
-        state: PadelCompaniesViewModelState,
-        fetchAvailabilityUseCase: any FetchAvailabilityUseCaseProtocol
-    ) {
+    init(state: PadelCompaniesViewModelState) {
         self.state = state
-        self.fetchAvailabilityUseCase = fetchAvailabilityUseCase
     }
 
     deinit {
