@@ -11,6 +11,7 @@ import CoreNavigation
 import CoreUI
 import DomainLayer
 import CoreDI
+import CoreFormatting
 
 // MARK: - State
 
@@ -26,6 +27,8 @@ enum PadelCompaniesViewModelIntent {
     case loadAvailability(Date)
     case navigateToProfile(Navigator<PadelCourtsTabNavigatorDestination>)
 }
+
+// MARK: - Row Model
 
 struct PadelCompanyRowModel: Identifiable {
     let id: String
@@ -51,8 +54,11 @@ final class PadelCompaniesViewModel: ObservableObject {
     @Published private(set) var state: PadelCompaniesViewModelState
 
     @Injected private var fetchAvailabilityUseCase: any FetchAvailabilityUseCaseProtocol
-    private var loadTask: Task<Void, Never>?
     
+    @Injected private var dateFormatterProvider: DateFormatterProviderProtocol
+    
+    private var loadTask: Task<Void, Never>?
+
     init(state: PadelCompaniesViewModelState) {
         self.state = state
     }
@@ -60,30 +66,34 @@ final class PadelCompaniesViewModel: ObservableObject {
     deinit {
         loadTask?.cancel()
     }
-    
-    func handleIntent(intent: PadelCompaniesViewModelIntent) {
+
+    func handleIntent(_ intent: PadelCompaniesViewModelIntent) {
         switch intent {
         case .loadAvailability(let date):
             loadAvailability(for: date)
         case .navigateToProfile:
-            print("navigated")
+            break
         }
     }
+}
 
-    private func loadAvailability(for date: Date) {
+// MARK: - handleIntent helpers
+
+private extension PadelCompaniesViewModel {
+    func loadAvailability(for date: Date) {
         loadTask?.cancel()
-        let requestDate = Self.requestDateFormatter.string(from: date)
-
+        
+        let requestDate = dateFormatterProvider.isoDateFormatter.string(from: date)
         state.isLoading = true
         state.errorMessage = nil
-
+        
         loadTask = Task { [weak self] in
             guard let self else { return }
-
+            
             do {
                 let companies = try await fetchAvailabilityUseCase.execute(date: requestDate)
                 try Task.checkCancellation()
-                state.companies = companies.map(Self.mapCompany)
+                state.companies = companies.map { mapCompany($0) }
                 state.errorMessage = nil
             } catch is CancellationError {
                 return
@@ -91,24 +101,18 @@ final class PadelCompaniesViewModel: ObservableObject {
                 state.companies = []
                 state.errorMessage = error.localizedDescription
             }
-
+            
             state.isLoading = false
         }
     }
 }
 
+// MARK: - Mapping
+
 private extension PadelCompaniesViewModel {
-    static let requestDateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.calendar = Calendar(identifier: .gregorian)
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter
-    }()
-
-    static func mapCompany(_ company: PadelCompany) -> PadelCompanyRowModel {
+    func mapCompany(_ company: PadelCompany) -> PadelCompanyRowModel {
         let colors = badgeColors(for: company.companyID)
-
+        
         return PadelCompanyRowModel(
             id: company.companyID,
             name: company.companyName,
@@ -122,18 +126,18 @@ private extension PadelCompaniesViewModel {
             slots: uniqueSlots(from: company.companyCourts)
         )
     }
-
-    static func firstImageURL(from courts: [PadelCourt]) -> URL? {
+    
+    func firstImageURL(from courts: [PadelCourt]) -> URL? {
         courts.lazy
             .compactMap(\.imageURL)
             .compactMap(URL.init(string:))
             .first
     }
-
-    static func uniqueSlots(from courts: [PadelCourt]) -> [AvailableSlot] {
+    
+    func uniqueSlots(from courts: [PadelCourt]) -> [AvailableSlot] {
         var orderedTimes: [String] = []
         var availabilityByTime: [String: Bool] = [:]
-
+        
         for court in courts {
             for slot in court.timeSlots {
                 if availabilityByTime[slot.startingTime] == nil {
@@ -144,21 +148,22 @@ private extension PadelCompaniesViewModel {
                 }
             }
         }
+        
+        return orderedTimes.map { AvailableSlot(title: $0, isAvailable: availabilityByTime[$0] ?? false) }
+    }
+}
 
-        return orderedTimes.map { time in
-            AvailableSlot(title: time, isAvailable: availabilityByTime[time] ?? false)
-        }
+// MARK: - Additional Helpers
+
+private extension PadelCompaniesViewModel {
+
+    func websiteHost(_ website: String) -> String? {
+        URL(string: website)?
+            .host(percentEncoded: false)?
+            .replacingOccurrences(of: "www.", with: "")
     }
 
-    static func websiteHost(_ website: String) -> String? {
-        guard let host = URL(string: website)?.host(percentEncoded: false) else {
-            return nil
-        }
-
-        return host.replacingOccurrences(of: "www.", with: "")
-    }
-
-    static func initials(from name: String, fallback: String) -> String {
+    func initials(from name: String, fallback: String) -> String {
         let initials = name
             .split(separator: " ")
             .prefix(2)
@@ -167,26 +172,21 @@ private extension PadelCompaniesViewModel {
             .joined()
             .uppercased()
 
-        if initials.isEmpty {
-            return String(fallback.prefix(2)).uppercased()
-        }
-
-        return initials
+        return initials.isEmpty
+            ? String(fallback.prefix(2)).uppercased()
+            : initials
     }
 
-    static func badgeColors(for id: String) -> (background: Color, foreground: Color, line: Color) {
-        let hash = stableHash(id)
-        let hue = Double(hash % 360) / 360.0
-        let background = Color(hue: hue, saturation: 0.58, brightness: 0.32)
-
+    func badgeColors(for id: String) -> (background: Color, foreground: Color, line: Color) {
+        let hue = Double(stableHash(id) % 360) / 360.0
         return (
-            background: background,
+            background: Color(hue: hue, saturation: 0.58, brightness: 0.32),
             foreground: Color.white.opacity(0.92),
             line: Color.white.opacity(0.22)
         )
     }
 
-    static func stableHash(_ value: String) -> UInt32 {
+    func stableHash(_ value: String) -> UInt32 {
         value.unicodeScalars.reduce(UInt32(2166136261)) { hash, scalar in
             (hash ^ UInt32(scalar.value)) &* 16777619
         }

@@ -11,12 +11,14 @@ import CoreDI
 import CoreNetworking
 import DataLayer
 import DomainLayer
+import CoreFormatting
 
 @main
 struct PadelFinderApp: App {
     init() {
         AppDependency.shared.assemble([
             CoreNetworkingAssembly(),
+            CoreFormatterAssembly(),
             DataAssembly(),
             DomainAssembly()
         ])

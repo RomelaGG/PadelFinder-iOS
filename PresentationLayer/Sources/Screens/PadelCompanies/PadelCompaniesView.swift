@@ -10,6 +10,8 @@ import CoreNavigation
 import CoreUI
 import DesignSystem
 
+// MARK: - PadelCompaniesView
+
 struct PadelCompaniesView: View {
     @EnvironmentObject var navigator: Navigator<PadelCourtsTabNavigatorDestination>
     @StateObject var viewModel: PadelCompaniesViewModel
@@ -47,13 +49,15 @@ struct PadelCompaniesView: View {
         .background(PadelDesignTokens.Colors.background.ignoresSafeArea())
         .toolbar(.hidden, for: .navigationBar)
         .task {
-            viewModel.handleIntent(intent: .loadAvailability(currentDate))
+            viewModel.handleIntent(.loadAvailability(currentDate))
         }
         .onChange(of: currentDate) { newDate in
-            viewModel.handleIntent(intent: .loadAvailability(newDate))
+            viewModel.handleIntent(.loadAvailability(newDate))
         }
     }
 }
+
+// MARK: - Private components
 
 private extension PadelCompaniesView {
     var header: some View {
@@ -61,7 +65,7 @@ private extension PadelCompaniesView {
             Text("Find a court")
                 .font(PadelDesignTokens.Fonts.bodyStrong)
                 .foregroundStyle(PadelDesignTokens.Colors.textSecondary)
-
+            
             Text(selectedDateTitle)
                 .font(PadelDesignTokens.Fonts.largeTitle)
                 .foregroundStyle(PadelDesignTokens.Colors.textPrimary)
@@ -70,7 +74,7 @@ private extension PadelCompaniesView {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
-
+    
     @ViewBuilder
     var companiesContent: some View {
         if viewModel.state.isLoading {
@@ -82,9 +86,9 @@ private extension PadelCompaniesView {
                     .font(PadelDesignTokens.Fonts.body)
                     .foregroundStyle(PadelDesignTokens.Colors.textSecondary)
                     .multilineTextAlignment(.center)
-
+                
                 Button("Retry") {
-                    viewModel.handleIntent(intent: .loadAvailability(currentDate))
+                    viewModel.handleIntent(.loadAvailability(currentDate))
                 }
                 .font(PadelDesignTokens.Fonts.bodyStrong)
                 .foregroundStyle(PadelDesignTokens.Colors.accent)
@@ -111,7 +115,7 @@ private extension PadelCompaniesView {
             }
         }
     }
-
+    
     @ViewBuilder
     func companyLogo(for company: PadelCompanyRowModel) -> some View {
         if let imageURL = company.imageURL {
@@ -134,7 +138,7 @@ private extension PadelCompaniesView {
             fallbackLogo(for: company)
         }
     }
-
+    
     func fallbackLogo(for company: PadelCompanyRowModel) -> some View {
         InitialsBadge(
             title: company.logoTitle,
@@ -143,7 +147,11 @@ private extension PadelCompaniesView {
             lineColor: company.logoLine
         )
     }
+}
 
+// MARK: - Private helpers
+
+private extension PadelCompaniesView {
     var selectedDateTitle: String {
         let weekday = currentDate.formatted(.dateTime.weekday(.wide))
         let day = currentDate.formatted(.dateTime.day())
