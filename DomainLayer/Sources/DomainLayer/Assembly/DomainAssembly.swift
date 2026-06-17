@@ -15,5 +15,10 @@ public struct DomainAssembly: Assembly {
             FetchAvailabilityUseCase()
         }
         .inObjectScope(.container)
+
+        container.register(FetchCompanyAvailabilityUseCaseProtocol.self) { _ in
+            FetchCompanyAvailabilityUseCase()
+        }
+        .inObjectScope(.container)
     }
 }

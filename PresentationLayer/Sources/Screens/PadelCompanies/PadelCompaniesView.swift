@@ -114,7 +114,9 @@ private extension PadelCompaniesView {
                         address: company.address,
                         distance: company.distance,
                         availableSlotsCount: company.availableSlotsCount,
-                        slots: company.slots
+                        slots: company.slots,
+                        onCompanySelected: { openDetails(for: company) },
+                        onSlotSelected: { _ in openDetails(for: company) }
                     ) {
                         companyLogo(for: company)
                     }
@@ -153,6 +155,14 @@ private extension PadelCompaniesView {
             foregroundColor: company.logoForeground,
             lineColor: company.logoLine
         )
+    }
+}
+
+// MARK: - Navigation
+
+private extension PadelCompaniesView {
+    func openDetails(for company: PadelCompanyRowModel) {
+        navigator.push(.padelCompaniesDetailsPage(companyID: company.id, date: currentDate))
     }
 }
 

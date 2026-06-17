@@ -10,6 +10,7 @@ import SwiftUI
 public protocol NavigatorDestination: Hashable {
     associatedtype DestinationView: View
 
+    @MainActor
     @ViewBuilder
     func view() -> DestinationView
 }

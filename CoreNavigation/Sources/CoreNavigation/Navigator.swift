@@ -26,11 +26,11 @@ public final class Navigator<Destination: NavigatorDestination>: ObservableObjec
         }
     }
 
-    func push(_ destination: Destination) {
+    public func push(_ destination: Destination) {
         stack.append(destination)
     }
 
-    func pop() {
+    public func pop() {
         guard !stack.isEmpty else { return }
         stack.removeLast()
     }

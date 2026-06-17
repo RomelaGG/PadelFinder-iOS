@@ -7,16 +7,17 @@
 
 import SwiftUI
 import CoreNavigation
+import Foundation
 
 enum PadelCourtsTabNavigatorDestination: NavigatorDestination {
-    case padelCompaniesDetailsPage
-    
+    case padelCompaniesDetailsPage(companyID: String, date: Date)
+
     @ViewBuilder
     func view() -> some View {
         switch self {
-        case .padelCompaniesDetailsPage:
-            EmptyView()
+        case let .padelCompaniesDetailsPage(companyID, date):
+            ClubDetailsView(viewModel: .init(state: .init(companyID: companyID, date: date)))
         }
     }
-    
+
 }

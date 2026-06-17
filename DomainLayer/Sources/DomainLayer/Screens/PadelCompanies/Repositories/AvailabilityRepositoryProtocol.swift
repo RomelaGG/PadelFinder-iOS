@@ -7,4 +7,5 @@
 
 public protocol AvailabilityRepositoryProtocol: Sendable {
     func fetchAvailability(date: String) async throws -> [PadelCompany]
+    func fetchCompanyAvailability(companyId: String, date: String) async throws -> PadelCompany
 }

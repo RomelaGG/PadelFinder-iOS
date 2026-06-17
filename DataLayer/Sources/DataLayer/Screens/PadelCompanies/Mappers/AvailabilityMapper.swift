@@ -9,18 +9,25 @@ import DomainLayer
 
 protocol AvailabilityMapperProtocol: Sendable {
     func map(_ response: AvailabilityResponseDTO) -> [PadelCompany]
+    func mapCompany(_ response: CompanyAvailabilityResponseDTO) -> PadelCompany
 }
 
 struct AvailabilityMapper: AvailabilityMapperProtocol, Sendable {
     func map(_ response: AvailabilityResponseDTO) -> [PadelCompany] {
-        response.companies.map { company in
-            PadelCompany(
-                companyName: company.name,
-                companyID: company.id,
-                companyWebsite: company.website,
-                companyCourts: company.courts.map(mapCourt)
-            )
-        }
+        response.companies.map(mapCompany)
+    }
+
+    func mapCompany(_ response: CompanyAvailabilityResponseDTO) -> PadelCompany {
+        mapCompany(response.company)
+    }
+
+    private func mapCompany(_ company: AvailabilityCompanyDTO) -> PadelCompany {
+        PadelCompany(
+            companyName: company.name,
+            companyID: company.id,
+            companyWebsite: company.website,
+            companyCourts: company.courts.map(mapCourt)
+        )
     }
 
     private func mapCourt(_ court: AvailabilityCourtDTO) -> PadelCourt {

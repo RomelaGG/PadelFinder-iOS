@@ -16,4 +16,9 @@ final class AvailabilityRepository: AvailabilityRepositoryProtocol, @unchecked S
         let response = try await remoteDataSource.fetchAvailability(date: date)
         return mapper.map(response)
     }
+
+    func fetchCompanyAvailability(companyId: String, date: String) async throws -> PadelCompany {
+        let response = try await remoteDataSource.fetchCompanyAvailability(companyId: companyId, date: date)
+        return mapper.mapCompany(response)
+    }
 }
