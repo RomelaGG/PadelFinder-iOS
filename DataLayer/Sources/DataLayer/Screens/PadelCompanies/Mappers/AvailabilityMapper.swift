@@ -26,6 +26,7 @@ struct AvailabilityMapper: AvailabilityMapperProtocol, Sendable {
             companyName: company.name,
             companyID: company.id,
             companyWebsite: company.website,
+            companyLogo: company.logo,
             companyCourts: company.courts.map(mapCourt)
         )
     }

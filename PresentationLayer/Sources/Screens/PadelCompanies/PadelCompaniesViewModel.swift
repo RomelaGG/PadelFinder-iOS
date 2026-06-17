@@ -39,7 +39,7 @@ struct PadelCompanyRowModel: Identifiable {
     let logoBackground: Color
     let logoForeground: Color
     let logoLine: Color
-    let imageURL: URL?
+    let logoURL: URL?
     let slots: [AvailableSlot]
 
     var availableSlotsCount: Int {
@@ -122,16 +122,9 @@ private extension PadelCompaniesViewModel {
             logoBackground: colors.background,
             logoForeground: colors.foreground,
             logoLine: colors.line,
-            imageURL: firstImageURL(from: company.companyCourts),
+            logoURL: company.companyLogo.flatMap(URL.init(string:)),
             slots: uniqueSlots(from: company.companyCourts)
         )
-    }
-    
-    func firstImageURL(from courts: [PadelCourt]) -> URL? {
-        courts.lazy
-            .compactMap(\.imageURL)
-            .compactMap(URL.init(string:))
-            .first
     }
     
     func uniqueSlots(from courts: [PadelCourt]) -> [AvailableSlot] {

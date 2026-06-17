@@ -13,6 +13,7 @@ struct AvailabilityCompanyDTO: Decodable, Sendable {
     let id: String
     let name: String
     let website: String?
+    let logo: String?
     let courts: [AvailabilityCourtDTO]
 }
 

@@ -127,8 +127,8 @@ private extension PadelCompaniesView {
     
     @ViewBuilder
     func companyLogo(for company: PadelCompanyRowModel) -> some View {
-        if let imageURL = company.imageURL {
-            AsyncImage(url: imageURL) { phase in
+        if let logoURL = company.logoURL {
+            AsyncImage(url: logoURL) { phase in
                 switch phase {
                 case .empty:
                     ProgressView()
@@ -136,7 +136,8 @@ private extension PadelCompaniesView {
                 case .success(let image):
                     image
                         .resizable()
-                        .scaledToFill()
+                        .scaledToFit()
+                        .padding(PadelDesignTokens.Spacing.m)
                 case .failure:
                     fallbackLogo(for: company)
                 @unknown default:
