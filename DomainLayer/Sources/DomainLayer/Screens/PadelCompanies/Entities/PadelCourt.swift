@@ -5,27 +5,30 @@
 //  Created by Giorgi Romelashvili on 02.06.26.
 //
 
-public struct PadelCourt: Sendable {
+public struct PadelCourt: Equatable, Sendable {
     public let courtName: String
     public let id: String
-    public let totalCourts: Int?
+    public let address: String?
+    public let totalCourts: Int
     public let pricePerHour: Int?
-    public let imageURL: String?
+    public let rating: Double?
     public let timeSlots: [TimeSlot]
     
     public init(
         courtName: String,
         id: String,
-        totalCourts: Int? = nil,
+        address: String? = nil,
+        totalCourts: Int = 0,
         pricePerHour: Int? = nil,
-        imageURL: String? = nil,
+        rating: Double? = nil,
         timeSlotsArray: [TimeSlot]
     ) {
         self.courtName = courtName
         self.id = id
+        self.address = address
         self.totalCourts = totalCourts
         self.pricePerHour = pricePerHour
-        self.imageURL = imageURL
+        self.rating = rating
         self.timeSlots = timeSlotsArray
     }
 }

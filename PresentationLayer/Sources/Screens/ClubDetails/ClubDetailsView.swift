@@ -64,18 +64,7 @@ private extension ClubDetailsView {
             ZStack(alignment: .topLeading) {
                 // Parallax image — grows and stays pinned on over-scroll
                 Group {
-                    if let imageURL = viewModel.state.imageURL {
-                        AsyncImage(url: imageURL) { phase in
-                            switch phase {
-                            case .success(let image):
-                                image.resizable().scaledToFill()
-                            default:
-                                coverPlaceholder
-                            }
-                        }
-                    } else {
-                        coverPlaceholder
-                    }
+                    coverImage
                 }
                 .frame(
                     width: geo.size.width,
@@ -94,7 +83,7 @@ private extension ClubDetailsView {
 
     @ViewBuilder
     var coverImage: some View {
-        if let imageURL = viewModel.state.imageURL {
+        if let imageURL = viewModel.state.coverImageURL {
             AsyncImage(url: imageURL) { phase in
                 switch phase {
                 case .success(let image):
@@ -166,11 +155,14 @@ private extension ClubDetailsView {
 
     @ViewBuilder
     var logo: some View {
-        if let imageURL = viewModel.state.imageURL {
+        if let imageURL = viewModel.state.logoURL {
             AsyncImage(url: imageURL) { phase in
                 switch phase {
                 case .success(let image):
-                    image.resizable().scaledToFill()
+                    image
+                        .resizable()
+                        .scaledToFit()
+                        .padding(PadelDesignTokens.Spacing.m)
                 default:
                     fallbackLogo
                 }

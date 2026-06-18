@@ -5,12 +5,28 @@
 //  Created by Giorgi Romelashvili on 02.06.26.
 //
 
-public struct TimeSlot: Sendable {
+public enum TimeSlotStatus: String, Equatable, Sendable {
+    case available
+    case booked
+    case maintenance
+}
+
+public struct TimeSlot: Equatable, Sendable {
     public let startingTime: String
-    public let availability: Bool
+    public let status: TimeSlotStatus
+    public let isBookable: Bool
     
-    public init(startingTime: String, availability: Bool) {
+    public var availability: Bool {
+        isBookable
+    }
+
+    public init(
+        startingTime: String,
+        status: TimeSlotStatus,
+        isBookable: Bool
+    ) {
         self.startingTime = startingTime
-        self.availability = availability
+        self.status = status
+        self.isBookable = isBookable
     }
 }

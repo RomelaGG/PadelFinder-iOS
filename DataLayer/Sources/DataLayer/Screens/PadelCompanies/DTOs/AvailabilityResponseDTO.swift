@@ -5,29 +5,38 @@
 //  Created by Giorgi Romelashvili on 08.06.26.
 //
 
-struct AvailabilityResponseDTO: Decodable, Sendable {
+struct AvailabilityResponseDTO: Decodable, Equatable, Sendable {
+    let date: String
     let companies: [AvailabilityCompanyDTO]
 }
 
-struct AvailabilityCompanyDTO: Decodable, Sendable {
+struct AvailabilityCompanyDTO: Decodable, Equatable, Sendable {
     let id: String
     let name: String
     let website: String?
     let logo: String?
+    let coverImage: String?
     let courts: [AvailabilityCourtDTO]
 }
 
-struct AvailabilityCourtDTO: Decodable, Sendable {
+struct AvailabilityCourtDTO: Decodable, Equatable, Sendable {
     let id: String
     let name: String
-    let totalCourts: Int?
+    let address: String?
     let pricePerHour: Int?
-    let imageUrl: String?
+    let rating: Double?
+    let totalCourts: Int
     let timeSlots: [AvailabilityTimeSlotDTO]
 }
 
-struct AvailabilityTimeSlotDTO: Decodable, Sendable {
+struct AvailabilityTimeSlotDTO: Decodable, Equatable, Sendable {
     let time: String
-    let status: String?
-    let isBookable: Bool?
+    let status: AvailabilityTimeSlotStatusDTO
+    let isBookable: Bool
+}
+
+enum AvailabilityTimeSlotStatusDTO: String, Decodable, Equatable, Sendable {
+    case available
+    case booked
+    case maintenance
 }

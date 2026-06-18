@@ -116,7 +116,9 @@ private extension PadelCompaniesViewModel {
         return PadelCompanyRowModel(
             id: company.companyID,
             name: company.companyName,
-            address: company.companyWebsite.flatMap(websiteHost) ?? "Website unavailable",
+            address: firstAddress(from: company.companyCourts)
+                ?? company.companyWebsite.flatMap(websiteHost)
+                ?? "Address unavailable",
             distance: "",
             logoTitle: initials(from: company.companyName, fallback: company.companyID),
             logoBackground: colors.background,
@@ -135,8 +137,8 @@ private extension PadelCompaniesViewModel {
             for slot in court.timeSlots {
                 if availabilityByTime[slot.startingTime] == nil {
                     orderedTimes.append(slot.startingTime)
-                    availabilityByTime[slot.startingTime] = slot.availability
-                } else if slot.availability {
+                    availabilityByTime[slot.startingTime] = slot.isBookable
+                } else if slot.isBookable {
                     availabilityByTime[slot.startingTime] = true
                 }
             }
@@ -149,6 +151,14 @@ private extension PadelCompaniesViewModel {
 // MARK: - Additional Helpers
 
 private extension PadelCompaniesViewModel {
+
+    func firstAddress(from courts: [PadelCourt]) -> String? {
+        courts.lazy
+            .compactMap { court in
+                court.address?.trimmingCharacters(in: .whitespacesAndNewlines)
+            }
+            .first { !$0.isEmpty }
+    }
 
     func websiteHost(_ website: String) -> String? {
         URL(string: website)?

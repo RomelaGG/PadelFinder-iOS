@@ -20,7 +20,8 @@ struct ClubDetailsViewModelState {
 
     var headerTitle = ""
     var location = ""
-    var imageURL: URL?
+    var coverImageURL: URL?
+    var logoURL: URL?
     var logoTitle = ""
     var logoBackground: Color = .gray
     var logoForeground: Color = .white
@@ -48,7 +49,6 @@ struct ClubCourtRowModel: Identifiable {
     let id: String
     let name: String
     let pricePerHour: Int?
-    let imageURL: URL?
     let slots: [AvailableSlot]
 
     var freeCount: Int {
@@ -123,8 +123,11 @@ private extension ClubDetailsViewModel {
         let colors = badgeColors(for: company.companyID)
 
         state.headerTitle = company.companyName
-        state.location = company.companyWebsite.flatMap(websiteHost) ?? "Website unavailable"
-        state.imageURL = firstImageURL(from: company.companyCourts)
+        state.location = firstAddress(from: company.companyCourts)
+            ?? company.companyWebsite.flatMap(websiteHost)
+            ?? "Address unavailable"
+        state.coverImageURL = company.companyCoverImage.flatMap(URL.init(string:))
+        state.logoURL = company.companyLogo.flatMap(URL.init(string:))
         state.logoTitle = initials(from: company.companyName, fallback: company.companyID)
         state.logoBackground = colors.background
         state.logoForeground = colors.foreground
@@ -138,16 +141,16 @@ private extension ClubDetailsViewModel {
             id: court.id,
             name: court.courtName,
             pricePerHour: court.pricePerHour,
-            imageURL: court.imageURL.flatMap(URL.init(string:)),
-            slots: court.timeSlots.map { AvailableSlot(title: $0.startingTime, isAvailable: $0.availability) }
+            slots: court.timeSlots.map { AvailableSlot(title: $0.startingTime, isAvailable: $0.isBookable) }
         )
     }
 
-    func firstImageURL(from courts: [PadelCourt]) -> URL? {
+    func firstAddress(from courts: [PadelCourt]) -> String? {
         courts.lazy
-            .compactMap(\.imageURL)
-            .compactMap(URL.init(string:))
-            .first
+            .compactMap { court in
+                court.address?.trimmingCharacters(in: .whitespacesAndNewlines)
+            }
+            .first { !$0.isEmpty }
     }
 
     /// Aggregate "Available time" strip: the union of every court's slots, where
@@ -160,8 +163,8 @@ private extension ClubDetailsViewModel {
             for slot in court.timeSlots {
                 if availabilityByTime[slot.startingTime] == nil {
                     orderedTimes.append(slot.startingTime)
-                    availabilityByTime[slot.startingTime] = slot.availability
-                } else if slot.availability {
+                    availabilityByTime[slot.startingTime] = slot.isBookable
+                } else if slot.isBookable {
                     availabilityByTime[slot.startingTime] = true
                 }
             }
