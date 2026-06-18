@@ -25,8 +25,8 @@ struct PadelCompaniesView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: PadelDesignTokens.Spacing.xxxl) {
-            VStack(alignment: .leading, spacing: PadelDesignTokens.Spacing.xxxl) {
+        VStack(alignment: .leading, spacing: PadelDesignTokens.Spacing.s) {
+            VStack(alignment: .leading, spacing: PadelDesignTokens.Spacing.xl) {
                 header
 
                 PadelSearchField(text: $searchText, isFocused: $searchFieldFocusState)
@@ -136,8 +136,7 @@ private extension PadelCompaniesView {
                 case .success(let image):
                     image
                         .resizable()
-                        .scaledToFit()
-                        .padding(PadelDesignTokens.Spacing.m)
+                        .scaledToFill()
                 case .failure:
                     fallbackLogo(for: company)
                 @unknown default:

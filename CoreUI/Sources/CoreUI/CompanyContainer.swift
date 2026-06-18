@@ -115,9 +115,9 @@ public struct CompanyContainer: View {
     public var body: some View {
         VStack(spacing: 0) {
             companyInformation
-                .padding(.horizontal, PadelDesignTokens.Spacing.xxxl)
-                .padding(.top, PadelDesignTokens.Spacing.xxxl)
-                .padding(.bottom, PadelDesignTokens.Spacing.xxxxl)
+                .padding(.horizontal, PadelDesignTokens.Spacing.xxl)
+                .padding(.top, PadelDesignTokens.Spacing.xxl)
+                .padding(.bottom, PadelDesignTokens.Spacing.xxxl)
 
             Divider()
                 .overlay(PadelDesignTokens.Colors.border)
@@ -150,12 +150,7 @@ private extension CompanyContainer {
     var companyInformation: some View {
         Button(action: onCompanySelected) {
             HStack(spacing: PadelDesignTokens.Spacing.xxl) {
-                logo
-                    .frame(
-                        width: PadelDesignTokens.Sizing.mediaThumbnail,
-                        height: PadelDesignTokens.Sizing.mediaThumbnail
-                    )
-                    .clipShape(imageShape)
+                logoThumbnail
 
                 VStack(alignment: .leading, spacing: PadelDesignTokens.Spacing.xs) {
                     Text(companyName)
@@ -174,6 +169,29 @@ private extension CompanyContainer {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(accessibilityLabel)
+    }
+
+    var logoThumbnail: some View {
+        logo
+            .frame(
+                width: PadelDesignTokens.Sizing.mediaThumbnail,
+                height: PadelDesignTokens.Sizing.mediaThumbnail
+            )
+            .background(PadelDesignTokens.Colors.surfaceMuted)
+            .clipShape(imageShape)
+            .overlay {
+                imageShape
+                    .stroke(
+                        PadelDesignTokens.Colors.border,
+                        lineWidth: PadelDesignTokens.Sizing.hairline
+                    )
+            }
+            .shadow(
+                color: PadelDesignTokens.Colors.shadowLow,
+                radius: PadelDesignTokens.Shadow.lowRadius,
+                x: PadelDesignTokens.Shadow.lowX,
+                y: PadelDesignTokens.Shadow.lowY
+            )
     }
 
     var metadataLine: some View {
