@@ -57,16 +57,39 @@ struct ClubDetailsView: View {
 
 private extension ClubDetailsView {
     var hero: some View {
-        ZStack(alignment: .topLeading) {
-            coverImage
-                .frame(height: 200)
-                .frame(maxWidth: .infinity)
-                .clipped()
+        GeometryReader { geo in
+            let offsetY = geo.frame(in: .global).minY
+            let isScrolledDown = offsetY > 0
 
-            backButton
-                .padding(.leading, PadelDesignTokens.Spacing.xxxl)
-                .padding(.top, 54)
+            ZStack(alignment: .topLeading) {
+                // Parallax image — grows and stays pinned on over-scroll
+                Group {
+                    if let imageURL = viewModel.state.imageURL {
+                        AsyncImage(url: imageURL) { phase in
+                            switch phase {
+                            case .success(let image):
+                                image.resizable().scaledToFill()
+                            default:
+                                coverPlaceholder
+                            }
+                        }
+                    } else {
+                        coverPlaceholder
+                    }
+                }
+                .frame(
+                    width: geo.size.width,
+                    height: isScrolledDown ? 200 + offsetY : 200  // grows on pull-down
+                )
+                .clipped()
+                .offset(y: isScrolledDown ? -offsetY : 0)  // pins to top on pull-down
+
+                backButton
+                    .padding(.leading, PadelDesignTokens.Spacing.xxxl)
+                    .padding(.top, 54)
+            }
         }
+        .frame(height: 200)  // reserves fixed space in the layout
     }
 
     @ViewBuilder
