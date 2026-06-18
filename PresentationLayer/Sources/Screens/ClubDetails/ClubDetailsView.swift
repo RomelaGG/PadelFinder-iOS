@@ -43,7 +43,7 @@ struct ClubDetailsView: View {
         }
         .background(PadelDesignTokens.Colors.background.ignoresSafeArea())
         .ignoresSafeArea(edges: .top)
-        .toolbar(.hidden, for: .navigationBar)
+        .backBarButton(navigator: navigator)
         .task {
             viewModel.handleIntent(.loadAvailability(currentDate))
         }
@@ -72,10 +72,6 @@ private extension ClubDetailsView {
                 )
                 .clipped()
                 .offset(y: isScrolledDown ? -offsetY : 0)  // pins to top on pull-down
-
-                backButton
-                    .padding(.leading, PadelDesignTokens.Spacing.xxxl)
-                    .padding(.top, 54)
             }
         }
         .frame(height: 200)  // reserves fixed space in the layout
@@ -103,19 +99,6 @@ private extension ClubDetailsView {
             startPoint: .topLeading,
             endPoint: .bottomTrailing
         )
-    }
-
-    var backButton: some View {
-        Button {
-            navigator.pop()
-        } label: {
-            Image(systemName: "chevron.left")
-                .font(.system(size: 17, weight: .semibold))
-                .foregroundStyle(PadelDesignTokens.Colors.textPrimary)
-                .frame(width: 38, height: 38)
-                .background(.ultraThinMaterial, in: Circle())
-        }
-        .accessibilityLabel("Back")
     }
 }
 
