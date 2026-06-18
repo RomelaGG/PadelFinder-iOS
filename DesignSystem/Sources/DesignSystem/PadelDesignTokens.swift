@@ -27,7 +27,7 @@ public enum PadelDesignTokens {
     public enum Fonts {
         public static let captionStrong = Font.system(size: 14, weight: .bold)
         public static let footnoteStrong = Font.system(size: 15, weight: .bold)
-        public static let body = Font.system(size: 17, weight: .regular)
+        public static let body = Font.system(size: 15, weight: .regular)
         public static let bodyStrong = Font.system(size: 18, weight: .bold)
         public static let input = Font.system(size: 20, weight: .regular)
         public static let title = Font.system(size: 22, weight: .bold)
