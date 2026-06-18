@@ -194,7 +194,6 @@ private extension ClubDetailsView {
                 startDate: Calendar.current.startOfDay(for: Date()),
                 dayCount: 21
             )
-            .padding(.horizontal, -PadelDesignTokens.Spacing.xl)
         }
     }
 
@@ -208,7 +207,6 @@ private extension ClubDetailsView {
                 emptyText: "No times available for this day."
             ) {
                 SlotPillsRow(slots: viewModel.state.slots)
-                    .padding(.horizontal, -PadelDesignTokens.Spacing.xl)
             }
         }
     }
@@ -238,8 +236,6 @@ private extension ClubDetailsView {
     func courtCard(_ court: ClubCourtRowModel) -> some View {
         VStack(spacing: 0) {
             HStack(spacing: PadelDesignTokens.Spacing.xl) {
-                CourtThumb()
-
                 VStack(alignment: .leading, spacing: PadelDesignTokens.Spacing.xxs) {
                     Text(court.name)
                         .font(PadelDesignTokens.Fonts.bodyStrong)
@@ -314,31 +310,5 @@ private extension ClubDetailsView {
         } else {
             loaded()
         }
-    }
-}
-
-// MARK: - CourtThumb
-
-private struct CourtThumb: View {
-    var body: some View {
-        ZStack {
-            PadelDesignTokens.Colors.accent
-
-            GeometryReader { proxy in
-                let size = proxy.size
-
-                Path { path in
-                    let inset: CGFloat = 8
-                    path.addRect(CGRect(x: inset, y: inset, width: size.width - inset * 2, height: size.height - inset * 2))
-                    path.move(to: CGPoint(x: size.width / 2, y: inset))
-                    path.addLine(to: CGPoint(x: size.width / 2, y: size.height - inset))
-                    path.move(to: CGPoint(x: inset, y: size.height / 2))
-                    path.addLine(to: CGPoint(x: size.width - inset, y: size.height / 2))
-                }
-                .stroke(PadelDesignTokens.Colors.onAccent.opacity(0.55), lineWidth: 1)
-            }
-        }
-        .frame(width: 46, height: 46)
-        .clipShape(RoundedRectangle(cornerRadius: PadelDesignTokens.Radius.l, style: .continuous))
     }
 }
