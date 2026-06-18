@@ -115,46 +115,17 @@ private extension PadelCompaniesView {
                         distance: company.distance,
                         availableSlotsCount: company.availableSlotsCount,
                         slots: company.slots,
+                        logoURL: company.logoURL,
+                        logoTitle: company.logoTitle,
+                        logoBackground: company.logoBackground,
+                        logoForeground: company.logoForeground,
+                        logoLine: company.logoLine,
                         onCompanySelected: { openDetails(for: company) },
                         onSlotSelected: { _ in openDetails(for: company) }
-                    ) {
-                        companyLogo(for: company)
-                    }
+                    )
                 }
             }
         }
-    }
-    
-    @ViewBuilder
-    func companyLogo(for company: PadelCompanyRowModel) -> some View {
-        if let logoURL = company.logoURL {
-            AsyncImage(url: logoURL) { phase in
-                switch phase {
-                case .empty:
-                    ProgressView()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                case .success(let image):
-                    image
-                        .resizable()
-                        .scaledToFill()
-                case .failure:
-                    fallbackLogo(for: company)
-                @unknown default:
-                    fallbackLogo(for: company)
-                }
-            }
-        } else {
-            fallbackLogo(for: company)
-        }
-    }
-    
-    func fallbackLogo(for company: PadelCompanyRowModel) -> some View {
-        InitialsBadge(
-            title: company.logoTitle,
-            backgroundColor: company.logoBackground,
-            foregroundColor: company.logoForeground,
-            lineColor: company.logoLine
-        )
     }
 }
 

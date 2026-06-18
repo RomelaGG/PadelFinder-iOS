@@ -30,7 +30,7 @@ public struct CompanyContainer: View {
         onSlotSelected: @escaping (AvailableSlot) -> Void = { _ in },
         @ViewBuilder logo: () -> Logo
     ) {
-        self.logo = AnyView(logo())
+        self.logo = AnyView(CompanyLogo(content: logo))
         self.companyName = companyName
         self.address = address
         self.distance = distance
@@ -59,6 +59,68 @@ public struct CompanyContainer: View {
             onCompanySelected: onCompanySelected,
             onSlotSelected: { onSlotSelected($0.title) },
             logo: logo
+        )
+    }
+
+    public init(
+        companyName: String,
+        address: String,
+        distance: String,
+        availableSlotsCount: Int,
+        slots: [AvailableSlot],
+        logoURL: URL?,
+        logoTitle: String,
+        logoBackground: Color,
+        logoForeground: Color,
+        logoLine: Color,
+        onCompanySelected: @escaping () -> Void = {},
+        onSlotSelected: @escaping (AvailableSlot) -> Void = { _ in }
+    ) {
+        self.logo = AnyView(
+            CompanyLogo(
+                logoURL: logoURL,
+                title: logoTitle,
+                backgroundColor: logoBackground,
+                foregroundColor: logoForeground,
+                lineColor: logoLine
+            )
+        )
+        self.companyName = companyName
+        self.address = address
+        self.distance = distance
+        self.availableSlotsCount = availableSlotsCount
+        self.slots = slots
+        self.onCompanySelected = onCompanySelected
+        self.onSlotSelected = onSlotSelected
+    }
+
+    public init(
+        companyName: String,
+        address: String,
+        distance: String,
+        availableSlotsCount: Int,
+        availableSlots: [String],
+        logoURL: URL?,
+        logoTitle: String,
+        logoBackground: Color,
+        logoForeground: Color,
+        logoLine: Color,
+        onCompanySelected: @escaping () -> Void = {},
+        onSlotSelected: @escaping (String) -> Void = { _ in }
+    ) {
+        self.init(
+            companyName: companyName,
+            address: address,
+            distance: distance,
+            availableSlotsCount: availableSlotsCount,
+            slots: availableSlots.map { AvailableSlot($0) },
+            logoURL: logoURL,
+            logoTitle: logoTitle,
+            logoBackground: logoBackground,
+            logoForeground: logoForeground,
+            logoLine: logoLine,
+            onCompanySelected: onCompanySelected,
+            onSlotSelected: { onSlotSelected($0.title) }
         )
     }
 
@@ -150,7 +212,7 @@ private extension CompanyContainer {
     var companyInformation: some View {
         Button(action: onCompanySelected) {
             HStack(spacing: PadelDesignTokens.Spacing.xxl) {
-                logoThumbnail
+                logo
 
                 VStack(alignment: .leading, spacing: PadelDesignTokens.Spacing.xs) {
                     Text(companyName)
@@ -169,29 +231,6 @@ private extension CompanyContainer {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(accessibilityLabel)
-    }
-
-    var logoThumbnail: some View {
-        logo
-            .frame(
-                width: PadelDesignTokens.Sizing.mediaThumbnail,
-                height: PadelDesignTokens.Sizing.mediaThumbnail
-            )
-            .background(PadelDesignTokens.Colors.surfaceMuted)
-            .clipShape(imageShape)
-            .overlay {
-                imageShape
-                    .stroke(
-                        PadelDesignTokens.Colors.border,
-                        lineWidth: PadelDesignTokens.Sizing.hairline
-                    )
-            }
-            .shadow(
-                color: PadelDesignTokens.Colors.shadowLow,
-                radius: PadelDesignTokens.Shadow.lowRadius,
-                x: PadelDesignTokens.Shadow.lowX,
-                y: PadelDesignTokens.Shadow.lowY
-            )
     }
 
     var metadataLine: some View {
@@ -243,13 +282,6 @@ private extension CompanyContainer {
     var containerShape: RoundedRectangle {
         RoundedRectangle(
             cornerRadius: PadelDesignTokens.Radius.xxxl,
-            style: .continuous
-        )
-    }
-
-    var imageShape: RoundedRectangle {
-        RoundedRectangle(
-            cornerRadius: PadelDesignTokens.Radius.xl,
             style: .continuous
         )
     }

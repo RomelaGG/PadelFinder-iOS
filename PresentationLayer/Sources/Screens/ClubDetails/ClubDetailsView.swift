@@ -124,12 +124,13 @@ private extension ClubDetailsView {
 private extension ClubDetailsView {
     var identity: some View {
         HStack(alignment: .center, spacing: PadelDesignTokens.Spacing.xxl) {
-            logo
-                .frame(width: 72, height: 72)
-                .clipShape(Circle())
-                .overlay {
-                    Circle().stroke(PadelDesignTokens.Colors.background, lineWidth: 3)
-                }
+            CompanyLogo(
+                logoURL: viewModel.state.logoURL,
+                title: viewModel.state.logoTitle,
+                backgroundColor: viewModel.state.logoBackground,
+                foregroundColor: viewModel.state.logoForeground,
+                lineColor: viewModel.state.logoLine
+            )
 
             VStack(alignment: .leading, spacing: PadelDesignTokens.Spacing.xs) {
                 Text(viewModel.state.headerTitle)
@@ -151,34 +152,6 @@ private extension ClubDetailsView {
             }
         }
         .padding(.horizontal, PadelDesignTokens.Spacing.xxxl)
-    }
-
-    @ViewBuilder
-    var logo: some View {
-        if let imageURL = viewModel.state.logoURL {
-            AsyncImage(url: imageURL) { phase in
-                switch phase {
-                case .success(let image):
-                    image
-                        .resizable()
-                        .scaledToFit()
-                        .padding(PadelDesignTokens.Spacing.m)
-                default:
-                    fallbackLogo
-                }
-            }
-        } else {
-            fallbackLogo
-        }
-    }
-
-    var fallbackLogo: some View {
-        InitialsBadge(
-            title: viewModel.state.logoTitle,
-            backgroundColor: viewModel.state.logoBackground,
-            foregroundColor: viewModel.state.logoForeground,
-            lineColor: viewModel.state.logoLine
-        )
     }
 }
 
