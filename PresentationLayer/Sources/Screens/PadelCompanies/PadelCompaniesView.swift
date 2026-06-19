@@ -111,7 +111,7 @@ private extension PadelCompaniesView {
                 ForEach(filteredCompanies) { company in
                     CompanyContainer(
                         companyName: company.name,
-                        address: company.address,
+                        address: company.websiteAddress,
                         distance: company.distance,
                         availableSlotsCount: company.availableSlotsCount,
                         slots: company.slots,
@@ -157,7 +157,7 @@ private extension PadelCompaniesView {
 
         return viewModel.state.companies.filter { company in
             company.name.localizedCaseInsensitiveContains(query)
-                || company.address.localizedCaseInsensitiveContains(query)
+                || company.websiteAddress.localizedCaseInsensitiveContains(query)
         }
     }
 

@@ -33,7 +33,7 @@ enum PadelCompaniesViewModelIntent {
 struct PadelCompanyRowModel: Identifiable {
     let id: String
     let name: String
-    let address: String
+    let websiteAddress: String
     let distance: String
     let logoTitle: String
     let logoBackground: Color
@@ -116,9 +116,7 @@ private extension PadelCompaniesViewModel {
         return PadelCompanyRowModel(
             id: company.companyID,
             name: company.companyName,
-            address: firstAddress(from: company.companyCourts)
-                ?? company.companyWebsite.flatMap(websiteHost)
-                ?? "Address unavailable",
+            websiteAddress: websiteAddress(from: company.companyWebsite) ?? "Website unavailable",
             distance: "",
             logoTitle: initials(from: company.companyName, fallback: company.companyID),
             logoBackground: colors.background,
@@ -152,12 +150,13 @@ private extension PadelCompaniesViewModel {
 
 private extension PadelCompaniesViewModel {
 
-    func firstAddress(from courts: [PadelCourt]) -> String? {
-        courts.lazy
-            .compactMap { court in
-                court.address?.trimmingCharacters(in: .whitespacesAndNewlines)
-            }
-            .first { !$0.isEmpty }
+    func websiteAddress(from website: String?) -> String? {
+        guard let website = website?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !website.isEmpty else {
+            return nil
+        }
+
+        return websiteHost(website) ?? website
     }
 
     func websiteHost(_ website: String) -> String? {
