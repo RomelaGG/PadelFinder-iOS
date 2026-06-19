@@ -46,12 +46,15 @@ struct PadelCompaniesView: View {
                     .padding(.horizontal, PadelDesignTokens.Spacing.xxxl)
                     .padding(.bottom, PadelDesignTokens.Spacing.xxxl)
             }
+            .refreshOnPull {
+                await viewModel.refreshAvailability(for: currentDate)
+            }
             .scrollDismissesKeyboard(.interactively)
         }
         .background(PadelDesignTokens.Colors.background.ignoresSafeArea())
         .toolbar(.hidden, for: .navigationBar)
-        .task {
-            viewModel.handleIntent(.loadAvailability(currentDate))
+        .onAppear {
+            viewModel.handleIntent(.loadInitialAvailability(currentDate))
         }
         .onChange(of: currentDate) { newDate in
             viewModel.handleIntent(.loadAvailability(newDate))

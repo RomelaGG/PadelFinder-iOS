@@ -35,7 +35,13 @@ public final class NetworkManager: @unchecked Sendable {
                 .serializingDecodable(R.Response.self, decoder: decoder)
                 .value
         } catch let error as AFError {
+            if error.isRequestCancellation {
+                throw CancellationError()
+            }
+
             throw errorMapper.map(error)
+        } catch let error as URLError where error.code == .cancelled {
+            throw CancellationError()
         }
     }
 }
@@ -79,5 +85,20 @@ private extension NetworkManager {
         }
 
         return urlRequest
+    }
+}
+
+private extension AFError {
+    var isRequestCancellation: Bool {
+        if isExplicitlyCancelledError {
+            return true
+        }
+
+        if case .sessionTaskFailed(let urlError as URLError) = self,
+           urlError.code == .cancelled {
+            return true
+        }
+
+        return false
     }
 }

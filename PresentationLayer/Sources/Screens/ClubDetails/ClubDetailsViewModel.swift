@@ -40,6 +40,7 @@ struct ClubDetailsViewModelState {
 // MARK: - Intent
 
 enum ClubDetailsViewModelIntent {
+    case loadInitialAvailability(Date)
     case loadAvailability(Date)
 }
 
@@ -64,6 +65,8 @@ final class ClubDetailsViewModel: ObservableObject {
     @Injected private var dateFormatterProvider: DateFormatterProviderProtocol
 
     private var loadTask: Task<Void, Never>?
+    private var hasLoadedInitialAvailability = false
+    private var loadGeneration = 0
 
     init(state: ClubDetailsViewModelState) {
         self.state = state
@@ -75,41 +78,78 @@ final class ClubDetailsViewModel: ObservableObject {
 
     func handleIntent(_ intent: ClubDetailsViewModelIntent) {
         switch intent {
+        case .loadInitialAvailability(let date):
+            loadInitialAvailability(for: date)
         case .loadAvailability(let date):
             loadAvailability(for: date)
         }
+    }
+
+    func refreshAvailability(for date: Date) async {
+        let task = startLoadAvailability(for: date)
+        await task.value
     }
 }
 
 // MARK: - Loading
 
 private extension ClubDetailsViewModel {
-    func loadAvailability(for date: Date) {
-        loadTask?.cancel()
+    func loadInitialAvailability(for date: Date) {
+        guard !hasLoadedInitialAvailability else { return }
 
+        hasLoadedInitialAvailability = true
+        loadAvailability(for: date)
+    }
+
+    func loadAvailability(for date: Date) {
+        startLoadAvailability(for: date)
+    }
+
+    @discardableResult
+    func startLoadAvailability(for date: Date) -> Task<Void, Never> {
+        loadTask?.cancel()
+        loadGeneration += 1
+
+        let generation = loadGeneration
+
+        let task = Task { [weak self] in
+            guard let self else { return }
+            await performLoadAvailability(for: date, generation: generation)
+        }
+
+        loadTask = task
+        return task
+    }
+
+    func performLoadAvailability(for date: Date, generation: Int) async {
         let companyID = state.companyID
         let requestDate = dateFormatterProvider.isoDateFormatter.string(from: date)
         state.isLoading = true
         state.errorMessage = nil
 
-        loadTask = Task { [weak self] in
-            guard let self else { return }
+        do {
+            let company = try await fetchCompanyAvailabilityUseCase.execute(companyId: companyID, date: requestDate)
+            try Task.checkCancellation()
+            guard isCurrentLoad(generation) else { return }
 
-            do {
-                let company = try await fetchCompanyAvailabilityUseCase.execute(companyId: companyID, date: requestDate)
-                try Task.checkCancellation()
-                apply(company)
-                state.errorMessage = nil
-            } catch is CancellationError {
-                return
-            } catch {
-                state.courts = []
-                state.slots = []
-                state.errorMessage = error.localizedDescription
-            }
+            apply(company)
+            state.errorMessage = nil
+        } catch is CancellationError {
+            return
+        } catch {
+            guard isCurrentLoad(generation), !Task.isCancelled else { return }
 
-            state.isLoading = false
+            state.courts = []
+            state.slots = []
+            state.errorMessage = error.localizedDescription
         }
+
+        guard isCurrentLoad(generation), !Task.isCancelled else { return }
+        state.isLoading = false
+    }
+
+    func isCurrentLoad(_ generation: Int) -> Bool {
+        loadGeneration == generation
     }
 }
 
