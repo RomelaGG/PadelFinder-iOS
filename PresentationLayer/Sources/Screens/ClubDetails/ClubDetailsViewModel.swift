@@ -19,7 +19,7 @@ struct ClubDetailsViewModelState {
     let initialDate: Date
 
     var headerTitle = ""
-    var location = ""
+    var websiteAddress = ""
     var coverImageURL: URL?
     var logoURL: URL?
     var logoTitle = ""
@@ -49,11 +49,8 @@ struct ClubCourtRowModel: Identifiable {
     let id: String
     let name: String
     let pricePerHour: Int?
+    let address: String?
     let slots: [AvailableSlot]
-
-    var freeCount: Int {
-        slots.filter(\.isAvailable).count
-    }
 }
 
 // MARK: - ViewModel
@@ -123,9 +120,7 @@ private extension ClubDetailsViewModel {
         let colors = badgeColors(for: company.companyID)
 
         state.headerTitle = company.companyName
-        state.location = firstAddress(from: company.companyCourts)
-            ?? company.companyWebsite.flatMap(websiteHost)
-            ?? "Address unavailable"
+        state.websiteAddress = websiteAddress(from: company.companyWebsite) ?? "Website unavailable"
         state.coverImageURL = company.companyCoverImage.flatMap(URL.init(string:))
         state.logoURL = company.companyLogo.flatMap(URL.init(string:))
         state.logoTitle = initials(from: company.companyName, fallback: company.companyID)
@@ -141,16 +136,18 @@ private extension ClubDetailsViewModel {
             id: court.id,
             name: court.courtName,
             pricePerHour: court.pricePerHour,
+            address: courtAddress(from: court.address),
             slots: court.timeSlots.map { AvailableSlot(title: $0.startingTime, isAvailable: $0.isBookable) }
         )
     }
 
-    func firstAddress(from courts: [PadelCourt]) -> String? {
-        courts.lazy
-            .compactMap { court in
-                court.address?.trimmingCharacters(in: .whitespacesAndNewlines)
-            }
-            .first { !$0.isEmpty }
+    func courtAddress(from address: String?) -> String? {
+        guard let address = address?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !address.isEmpty else {
+            return nil
+        }
+
+        return address
     }
 
     /// Aggregate "Available time" strip: the union of every court's slots, where
@@ -177,6 +174,15 @@ private extension ClubDetailsViewModel {
 // MARK: - Helpers
 
 private extension ClubDetailsViewModel {
+    func websiteAddress(from website: String?) -> String? {
+        guard let website = website?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !website.isEmpty else {
+            return nil
+        }
+
+        return websiteHost(website) ?? website
+    }
+
     func websiteHost(_ website: String) -> String? {
         URL(string: website)?
             .host(percentEncoded: false)?

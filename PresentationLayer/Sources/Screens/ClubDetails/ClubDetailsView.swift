@@ -123,11 +123,11 @@ private extension ClubDetailsView {
                     .minimumScaleFactor(0.8)
 
                 HStack(spacing: PadelDesignTokens.Spacing.s) {
-                    Image(systemName: "mappin.and.ellipse")
+                    Image(systemName: "globe")
                         .font(.system(size: 12, weight: .semibold))
                         .foregroundStyle(PadelDesignTokens.Colors.textSecondary)
 
-                    Text(viewModel.state.location)
+                    Text(viewModel.state.websiteAddress)
                         .font(PadelDesignTokens.Fonts.body)
                         .foregroundStyle(PadelDesignTokens.Colors.textSecondary)
                         .lineLimit(1)
@@ -191,28 +191,24 @@ private extension ClubDetailsView {
 
     func courtCard(_ court: ClubCourtRowModel) -> some View {
         VStack(spacing: 0) {
-            HStack(spacing: PadelDesignTokens.Spacing.xl) {
-                VStack(alignment: .leading, spacing: PadelDesignTokens.Spacing.xxs) {
-                    Text(court.name)
-                        .font(PadelDesignTokens.Fonts.bodyStrong)
-                        .foregroundStyle(PadelDesignTokens.Colors.textPrimary)
-                        .lineLimit(1)
+            VStack(alignment: .leading, spacing: PadelDesignTokens.Spacing.xl) {
+                Text(court.name)
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundStyle(PadelDesignTokens.Colors.textPrimary)
+                    .lineLimit(1)
 
-                    if let price = court.pricePerHour {
-                        Text("from \(price) ₾ / hour")
-                            .font(PadelDesignTokens.Fonts.body)
-                            .foregroundStyle(PadelDesignTokens.Colors.textSecondary)
-                    }
+                if let price = court.pricePerHour {
+                    priceBadge(price)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
 
-                Text("\(court.freeCount) free")
-                    .font(PadelDesignTokens.Fonts.captionStrong)
-                    .foregroundStyle(PadelDesignTokens.Colors.accent)
+                if let address = court.address {
+                    courtAddressRow(address)
+                }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, PadelDesignTokens.Spacing.xxl)
             .padding(.top, PadelDesignTokens.Spacing.xxl)
-            .padding(.bottom, PadelDesignTokens.Spacing.xl)
+            .padding(.bottom, PadelDesignTokens.Spacing.xxl)
 
             Divider()
                 .overlay(PadelDesignTokens.Colors.border)
@@ -228,6 +224,38 @@ private extension ClubDetailsView {
                 .stroke(PadelDesignTokens.Colors.border, lineWidth: PadelDesignTokens.Sizing.hairline)
         }
         .padding(.horizontal, PadelDesignTokens.Spacing.xxxl)
+    }
+
+    func priceBadge(_ price: Int) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: PadelDesignTokens.Spacing.s) {
+            Text("\(price)₾")
+                .font(.system(size: 20, weight: .bold))
+                .foregroundStyle(PadelDesignTokens.Colors.accent)
+
+            Text("/ hour")
+                .font(.system(size: 15, weight: .regular))
+                .foregroundStyle(PadelDesignTokens.Colors.accent.opacity(0.56))
+        }
+        .lineLimit(1)
+        .padding(.horizontal, PadelDesignTokens.Spacing.xxl)
+        .frame(height: 40)
+        .background(PadelDesignTokens.Colors.accent.opacity(0.12))
+        .clipShape(RoundedRectangle(cornerRadius: PadelDesignTokens.Radius.l, style: .continuous))
+    }
+
+    func courtAddressRow(_ address: String) -> some View {
+        HStack(alignment: .top, spacing: PadelDesignTokens.Spacing.m) {
+            Image(systemName: "mappin")
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(PadelDesignTokens.Colors.textDisabled)
+                .frame(width: 16, height: 20)
+
+            Text(address)
+                .font(.system(size: 15, weight: .regular))
+                .foregroundStyle(PadelDesignTokens.Colors.textSecondary)
+                .lineLimit(2)
+                .fixedSize(horizontal: false, vertical: true)
+        }
     }
 }
 
