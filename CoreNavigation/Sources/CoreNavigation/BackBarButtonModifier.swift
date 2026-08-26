@@ -16,7 +16,7 @@ public struct BackBarButtonModifier<Destination: NavigatorDestination>: ViewModi
 
     public func body(content: Content) -> some View {
         content
-            .navigationBarBackButtonHidden(true)
+            .hidingNavigationBar()
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {

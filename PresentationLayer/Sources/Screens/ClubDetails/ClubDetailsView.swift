@@ -46,7 +46,7 @@ struct ClubDetailsView: View {
         }
         .background(PadelDesignTokens.Colors.background.ignoresSafeArea())
         .ignoresSafeArea(edges: .top)
-        .backBarButton(navigator: navigator)
+       // .backBarButton(navigator: navigator)
         .onAppear {
             viewModel.handleIntent(.loadInitialAvailability(currentDate))
         }
