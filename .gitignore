@@ -1,0 +1,26 @@
+# macOS
+.DS_Store
+
+# Xcode — per-user state (window layout, scheme order, breakpoints)
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+
+# Xcode — build products
+build/
+DerivedData/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager
+# (each local package also carries its own .gitignore)
+.build/
+.swiftpm/
+Packages/
+
+# Note: Package.resolved is intentionally tracked so dependency
+# versions stay pinned across clones and CI.
