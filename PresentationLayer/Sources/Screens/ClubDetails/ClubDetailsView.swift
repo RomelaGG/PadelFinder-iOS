@@ -16,6 +16,7 @@ struct ClubDetailsView: View {
     @EnvironmentObject var navigator: Navigator<PadelCourtsTabNavigatorDestination>
     @StateObject var viewModel: ClubDetailsViewModel
     @State private var currentDate: Date
+    @State private var topOverscroll: CGFloat = 0
 
     init(viewModel: ClubDetailsViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
@@ -44,6 +45,7 @@ struct ClubDetailsView: View {
         .refreshOnPull {
             await viewModel.refreshAvailability(for: currentDate)
         }
+        .onTopOverscrollChange { topOverscroll = $0 }
         .background(PadelDesignTokens.Colors.background.ignoresSafeArea())
         .ignoresSafeArea(edges: .top)
        // .backBarButton(navigator: navigator)
@@ -59,25 +61,19 @@ struct ClubDetailsView: View {
 // MARK: - Hero
 
 private extension ClubDetailsView {
-    var hero: some View {
-        GeometryReader { geo in
-            let offsetY = geo.frame(in: .global).minY
-            let isScrolledDown = offsetY > 0
+    enum Constants {
+        static let heroHeight: CGFloat = 200
+    }
 
-            ZStack(alignment: .topLeading) {
-                // Parallax image — grows and stays pinned on over-scroll
-                Group {
-                    coverImage
-                }
-                .frame(
-                    width: geo.size.width,
-                    height: isScrolledDown ? 200 + offsetY : 200  // grows on pull-down
-                )
-                .clipped()
-                .offset(y: isScrolledDown ? -offsetY : 0)  // pins to top on pull-down
-            }
-        }
-        .frame(height: 200)  // reserves fixed space in the layout
+    /// Cover photo pinned to the top of the screen: it stretches with the pull
+    /// instead of sliding down, so over-scrolling never opens a gap above it.
+    var hero: some View {
+        Color.clear
+            .frame(height: Constants.heroHeight + topOverscroll)
+            .overlay { coverImage }
+            .clipped()
+            .offset(y: -topOverscroll)
+            .frame(height: Constants.heroHeight, alignment: .top)  // fixed slot in the layout
     }
 
     @ViewBuilder
