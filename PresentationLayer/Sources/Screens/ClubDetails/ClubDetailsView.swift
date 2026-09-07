@@ -76,18 +76,10 @@ private extension ClubDetailsView {
             .frame(height: Constants.heroHeight, alignment: .top)  // fixed slot in the layout
     }
 
-    @ViewBuilder
     var coverImage: some View {
-        if let imageURL = viewModel.state.coverImageURL {
-            AsyncImage(url: imageURL) { phase in
-                switch phase {
-                case .success(let image):
-                    image.resizable().scaledToFill()
-                default:
-                    coverPlaceholder
-                }
-            }
-        } else {
+        RemoteImage(url: viewModel.state.coverImageURL) { image in
+            image.resizable().scaledToFill()
+        } placeholder: {
             coverPlaceholder
         }
     }
