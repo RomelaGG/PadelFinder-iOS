@@ -11,9 +11,12 @@ import Foundation
 // MARK: - Supporting Types
 
 public enum AppConfig {
-    public static let baseURL = "http://127.0.0.1:8080"
-    public static let authURL = "http://127.0.0.1:8080"
-    public static let cdnURL = "http://127.0.0.1:8080"
+    // Hosted backend. Still hardcoded: switching environments needs
+    // build-configuration files, which is a separate piece of work.
+    // For a local server, point these at http://127.0.0.1:8080 instead.
+    public static let baseURL = "https://padelfinder-ge.fly.dev"
+    public static let authURL = "https://padelfinder-ge.fly.dev"
+    public static let cdnURL = "https://padelfinder-ge.fly.dev"
 }
 
 public enum BaseURLType {
