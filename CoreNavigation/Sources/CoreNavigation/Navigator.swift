@@ -44,15 +44,15 @@ public final class Navigator<Destination: NavigatorDestination>: ObservableObjec
         stack.removeAll()
     }
 
-    func replaceStack(with destination: Destination) {
+    public func replaceStack(with destination: Destination) {
         stack = [destination]
     }
 
-    func presentFullScreen(_ destination: Destination) {
+    public func presentFullScreen(_ destination: Destination) {
         fullScreen = destination
     }
 
-    func dismissFullScreen() {
+    public func dismissFullScreen() {
         fullScreen = nil
     }
 }

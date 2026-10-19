@@ -18,7 +18,8 @@ let package = Package(
         .package(name: "DesignSystem", path: "../DesignSystem"),
         .package(name: "CoreNavigation", path: "../CoreNavigation"),
         .package(name: "DomainLayer", path: "../DomainLayer"),
-        .package(name: "CoreFormatting", path: "../CoreFormatting")
+        .package(name: "CoreFormatting", path: "../CoreFormatting"),
+        .package(name: "CoreDI", path: "../CoreDI")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -30,7 +31,8 @@ let package = Package(
                 .product(name: "DesignSystem", package: "DesignSystem"),
                 .product(name: "CoreNavigation", package: "CoreNavigation"),
                 .product(name: "DomainLayer", package: "DomainLayer"),
-                .product(name: "CoreFormatting", package: "CoreFormatting")
+                .product(name: "CoreFormatting", package: "CoreFormatting"),
+                .product(name: "CoreDI", package: "CoreDI")
             ]
         ),
 

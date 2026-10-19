@@ -12,37 +12,51 @@ public final class NetworkManager: @unchecked Sendable {
     private let session: Session
     private let decoder: JSONDecoder
     private let errorMapper: AFErrorMapper
+    private let tokenProvider: (any AuthTokenProviding)?
 
     public init(
         session: Session = .default,
-        errorMapper: AFErrorMapper = AFErrorMapper()
+        errorMapper: AFErrorMapper = AFErrorMapper(),
+        tokenProvider: (any AuthTokenProviding)? = nil
     ) {
         self.session = session
         self.errorMapper = errorMapper
+        self.tokenProvider = tokenProvider
         self.decoder = JSONDecoder()
         self.decoder.keyDecodingStrategy = .convertFromSnakeCase
     }
 
+    /// Sends a request, stamping the bearer token when the request asks for it.
+    ///
+    /// A 401 buys exactly one more attempt, after a refresh. That is a single
+    /// `catch` branch rather than a loop on purpose: the retried attempt is
+    /// never itself retried, so there is no recursion to bound.
     public func send<R: NetworkRequest>(_ request: R) async throws -> R.Response {
-        guard let urlRequest = buildURLRequest(from: request) else {
-            throw NetworkError.invalidRequest
-        }
+        let token = request.requiresAuth ? try await tokenProvider?.accessToken() : nil
 
         do {
-            return try await session
-                .request(urlRequest)
-                .validate()
-                .serializingDecodable(R.Response.self, decoder: decoder)
-                .value
-        } catch let error as AFError {
-            if error.isRequestCancellation {
-                throw CancellationError()
+            return try await perform(request, accessToken: token)
+        } catch let error as NetworkError {
+            guard request.requiresAuth,
+                  error.httpStatusCode == 401,
+                  let tokenProvider,
+                  let refreshed = try await tokenProvider.refreshedAccessToken(after: token)
+            else {
+                throw error
             }
 
-            throw errorMapper.map(error)
-        } catch let error as URLError where error.code == .cancelled {
-            throw CancellationError()
+            return try await perform(request, accessToken: refreshed)
         }
+    }
+
+    /// Sends a request without a token and without the 401 retry.
+    ///
+    /// The refresh call itself uses this. Routing it through `send` would have
+    /// the token provider re-enter itself while its own refresh is in flight -
+    /// a permanent hang rather than a crash - so the refresh path is kept
+    /// structurally unable to recurse, whatever `requiresAuth` happens to say.
+    public func sendUnauthenticated<R: NetworkRequest>(_ request: R) async throws -> R.Response {
+        try await perform(request, accessToken: nil)
     }
 }
 
@@ -50,7 +64,45 @@ public final class NetworkManager: @unchecked Sendable {
 
 private extension NetworkManager {
 
-    func buildURLRequest<R: NetworkRequest>(from request: R) -> URLRequest? {
+    func perform<R: NetworkRequest>(_ request: R, accessToken: String?) async throws -> R.Response {
+        guard let urlRequest = try buildURLRequest(from: request, accessToken: accessToken) else {
+            throw NetworkError.invalidRequest
+        }
+
+        // `.response` rather than `.value`: the error body is where the backend
+        // explains the refusal, and `.value` throws it away.
+        let response = await session
+            .request(urlRequest)
+            .validate()
+            .serializingDecodable(R.Response.self, decoder: decoder)
+            .response
+
+        switch response.result {
+        case .success(let value):
+            return value
+
+        case .failure(let error):
+            if error.isRequestCancellation {
+                throw CancellationError()
+            }
+
+            if case .sessionTaskFailed(let urlError as URLError) = error,
+               urlError.code == .cancelled {
+                throw CancellationError()
+            }
+
+            throw errorMapper.map(
+                error,
+                body: response.data,
+                statusCode: response.response?.statusCode
+            )
+        }
+    }
+
+    func buildURLRequest<R: NetworkRequest>(
+        from request: R,
+        accessToken: String?
+    ) throws -> URLRequest? {
         guard var urlComponents = URLComponents(string: request.baseURLType.url + request.path) else {
             return nil
         }
@@ -66,20 +118,22 @@ private extension NetworkManager {
         urlRequest.timeoutInterval = request.timeoutInterval
 
         var headers = request.headers
-        
-        // TODO: Inject TokenManager and handle auth headers - [Network Package]
-        if request.requiresAuth {
-            // headers.add(.authorization(bearerToken: token))
+
+        if let accessToken {
+            headers.add(.authorization(bearerToken: accessToken))
         }
-        
+
         headers.add(.contentType("application/json"))
         urlRequest.headers = headers
 
         switch request.body {
         case .object(let encodable):
-            urlRequest.httpBody = try? JSONEncoder().encode(encodable)
+            // Thrown rather than swallowed: an unencodable body would otherwise
+            // be sent as no body at all and come back as a baffling validation
+            // error from the server.
+            urlRequest.httpBody = try JSONEncoder().encode(encodable)
         case .raw(let dict):
-            urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: dict)
+            urlRequest.httpBody = try JSONSerialization.data(withJSONObject: dict)
         case .empty:
             break
         }

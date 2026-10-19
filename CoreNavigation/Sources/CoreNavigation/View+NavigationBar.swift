@@ -8,21 +8,19 @@
 import UIKit
 import SwiftUI
 
-// MARK: - hidingNavigationBar
+// MARK: - restoringSwipeBack
 
 extension View {
-    /// Hides the parent PBNavigationStack's bar so this screen can render its own
-    @ViewBuilder
-    func hidingNavigationBar() -> some View {
-        let content = background(
+    /// Keeps the edge swipe alive on screens that take the back item away from
+    /// UIKit with `navigationBarBackButtonHidden(true)`. UIKit disables the
+    /// gesture along with the item, so it has to be switched back on by hand.
+    ///
+    /// Not for screens that hide the bar in order to suppress back: there the
+    /// dead gesture is the point.
+    func restoringSwipeBack() -> some View {
+        background(
             NavigationControllerReader { $0.allowSwipeBackWithoutBar() }
         )
-
-        if #available(iOS 16.0, *) {
-            content.toolbar(.hidden, for: .navigationBar)
-        } else {
-            content.navigationBarHidden(true)
-        }
     }
 }
 
@@ -44,7 +42,7 @@ private struct NavigationControllerReader: UIViewControllerRepresentable {
     }
 }
 
-// MARK: - Letting the pop gestures begin without a bar.
+// MARK: - Letting the pop gestures begin without a back item.
 
 private extension UINavigationController {
     func allowSwipeBackWithoutBar() {

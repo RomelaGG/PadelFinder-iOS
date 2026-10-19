@@ -48,7 +48,7 @@ struct ClubDetailsView: View {
         .onTopOverscrollChange { topOverscroll = $0 }
         .background(PadelDesignTokens.Colors.background.ignoresSafeArea())
         .ignoresSafeArea(edges: .top)
-       // .backBarButton(navigator: navigator)
+        .backBarButton(navigator: navigator)
         .onAppear {
             viewModel.handleIntent(.loadInitialAvailability(currentDate))
         }

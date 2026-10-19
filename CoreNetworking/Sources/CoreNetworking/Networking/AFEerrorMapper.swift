@@ -12,6 +12,27 @@ public final class AFErrorMapper {
 
     public init() {}
 
+    /// Maps a failure that also carries a response body.
+    ///
+    /// The body is where the backend explains itself, so it is read first: a
+    /// decodable envelope becomes `.apiError` and keeps both the stable code
+    /// and the sentence. Anything else falls through to the status-only
+    /// mapping below, unchanged.
+    public func map(_ error: AFError, body: Data?, statusCode: Int?) -> NetworkError {
+        guard let statusCode,
+              let body,
+              !body.isEmpty,
+              let envelope = try? JSONDecoder().decode(APIErrorEnvelope.self, from: body),
+              !envelope.reason.isEmpty
+        else {
+            return map(error)
+        }
+
+        return .apiError(
+            APIError(statusCode: statusCode, code: envelope.code, reason: envelope.reason)
+        )
+    }
+
     public func map(_ error: AFError) -> NetworkError {
         switch error {
         case .responseValidationFailed(let reason):

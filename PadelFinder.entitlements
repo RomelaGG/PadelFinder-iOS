@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Required for any Keychain access at all. Without an entitlements file
+	     the app has no application-identifier, and every SecItem call fails
+	     with errSecMissingEntitlement (-34018) - which shows up only as the
+	     user being signed out again on every launch.
+
+	     $(AppIdentifierPrefix) resolves to the team prefix, so automatic
+	     signing grants this without any change in the developer portal.
+
+	     Sign in with Apple, Apple Pay, Associated Domains and Push belong in
+	     this file too when they are wired up. -->
+	<key>keychain-access-groups</key>
+	<array>
+		<string>$(AppIdentifierPrefix)GR.PadelFinder</string>
+	</array>
+</dict>
+</plist>

@@ -5,6 +5,7 @@
 //  Created by Giorgi Romelashvili on 19.06.26.
 //
 
+import DesignSystem
 import SwiftUI
 import UIKit
 
@@ -61,7 +62,7 @@ private extension PullRefreshModifier {
             ProgressView()
                 .progressViewStyle(.circular)
                 .padding(Constants.indicatorPadding)
-                .background(.ultraThinMaterial, in: Circle())
+                .padelGlass(in: Circle())
                 .scaleEffect(isRefreshing ? 1 : Constants.minimumScale + (1 - Constants.minimumScale) * pullProgress)
                 .opacity(isRefreshing ? 1 : pullProgress)
                 .frame(maxWidth: .infinity)
