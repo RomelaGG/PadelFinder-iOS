@@ -128,8 +128,7 @@ enum AuthCopy {
         static let emptyEmail = "Enter your email address."
         static let emptyPassword = "Enter your password."
         static let passwordMismatch = "Passwords don't match."
-        static let weakPassword =
-            "Choose a password with at least 8 characters, a letter and a number."
+        static let weakPassword = "Choose a password with at least 8 characters."
         static let incompleteCode = "Enter all 6 digits."
         static let generic = "Something went wrong. Please try again."
     }

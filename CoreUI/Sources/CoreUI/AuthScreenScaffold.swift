@@ -28,6 +28,11 @@ public struct AuthScreenScaffold<Content: View, Footer: View>: View {
     private let content: Content
     private let footer: Footer
 
+    /// Zero when the footer slot is empty — `VerifyCode` leaves it so for the
+    /// password-reset purpose — which is how the bar knows not to draw itself.
+    @State private var footerContentHeight: CGFloat = 0
+    @State private var isKeyboardVisible = false
+
     public init(
         title: String? = nil,
         subtitle: String? = nil,
@@ -51,6 +56,8 @@ public struct AuthScreenScaffold<Content: View, Footer: View>: View {
         .safeAreaInset(edge: .bottom, spacing: 0) {
             footerRow
         }
+        .onReceive(keyboardWillShow) { _ in isKeyboardVisible = true }
+        .onReceive(keyboardWillHide) { _ in isKeyboardVisible = false }
     }
 }
 
@@ -106,9 +113,48 @@ private extension AuthScreenScaffold {
         }
         .frame(maxWidth: PadelDesignTokens.Layout.maxContentWidth)
         .frame(maxWidth: .infinity)
+        .background(HeightReader(height: $footerContentHeight))
         .padding(.horizontal, PadelDesignTokens.Layout.screenHorizontal)
-        .padding(.bottom, PadelDesignTokens.Layout.footerBottom)
+        .padding(.bottom, bottomInset)
         .padding(.top, PadelDesignTokens.Spacing.xl)
+        .environment(\.isKeyboardVisible, isKeyboardVisible)
+        // Only the *background* is conditional, never the frame or the padding:
+        // feeding a measured height back into layout inside a `safeAreaInset`
+        // is how a resize loop starts.
+        .background { if footerContentHeight > 0 { footerBackground } }
+        .animation(.easeOut(duration: PadelDesignTokens.Motion.fast), value: isKeyboardVisible)
+    }
+
+    /// The bar the footer floats on, so the form passing underneath blurs away
+    /// instead of showing through the gaps between the buttons.
+    ///
+    /// It bleeds past the bottom of the container — but never past the keyboard —
+    /// because the scroll view runs under the home indicator even though the
+    /// footer stops above it.
+    var footerBackground: some View {
+        Color.clear
+            .padelGlass(in: Rectangle())
+            .overlay(alignment: .top) {
+                PadelDesignTokens.Colors.border
+                    .frame(height: PadelDesignTokens.Sizing.hairline)
+            }
+            .ignoresSafeArea(.container, edges: .bottom)
+    }
+
+    /// `footerBottom` clears the home indicator. The keyboard covers it, so with
+    /// the keyboard up that gap is height the squeezed form could be using.
+    var bottomInset: CGFloat {
+        isKeyboardVisible
+            ? PadelDesignTokens.Layout.footerBottomCompact
+            : PadelDesignTokens.Layout.footerBottom
+    }
+
+    var keyboardWillShow: NotificationCenter.Publisher {
+        NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
+    }
+
+    var keyboardWillHide: NotificationCenter.Publisher {
+        NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)
     }
 
     func resignFocus() {
@@ -118,6 +164,52 @@ private extension AuthScreenScaffold {
             from: nil,
             for: nil
         )
+    }
+}
+
+// MARK: - isKeyboardVisible
+
+private struct IsKeyboardVisibleKey: EnvironmentKey {
+    static let defaultValue = false
+}
+
+public extension EnvironmentValues {
+    /// Whether the keyboard is on screen, published by `AuthScreenScaffold` to
+    /// everything in its footer.
+    ///
+    /// The footer is built at the call site but rendered in here, so a footer
+    /// that wants to change shape with the keyboard — a full-width button that
+    /// becomes a compact one — can read this instead of every auth screen
+    /// growing its own notification observer.
+    var isKeyboardVisible: Bool {
+        get { self[IsKeyboardVisibleKey.self] }
+        set { self[IsKeyboardVisibleKey.self] = newValue }
+    }
+}
+
+// MARK: - HeightReader
+
+/// Reports the height of the view it backs.
+///
+/// Installed as a background so it measures without taking part in the layout
+/// it is measuring, and defers the report off SwiftUI's update pass.
+private struct HeightReader: View {
+    @Binding var height: CGFloat
+
+    var body: some View {
+        GeometryReader { proxy in
+            Color.clear
+                .onAppear { report(proxy.size.height) }
+                .onChange(of: proxy.size.height) { report($0) }
+        }
+    }
+
+    private func report(_ newHeight: CGFloat) {
+        guard height != newHeight else { return }
+
+        Task { @MainActor in
+            height = newHeight
+        }
     }
 }
 

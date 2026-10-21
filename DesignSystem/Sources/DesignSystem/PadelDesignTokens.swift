@@ -121,6 +121,9 @@ public enum PadelDesignTokens {
         public static let blockGap: CGFloat = 32
         public static let heroTop: CGFloat = 40
         public static let footerBottom: CGFloat = 24
+        /// What `footerBottom` shrinks to while the keyboard is up: the home
+        /// indicator it clears is gone, and the form needs the height more.
+        public static let footerBottomCompact: CGFloat = 8
         /// Auth content is centred and capped on iPad.
         public static let maxContentWidth: CGFloat = 420
     }

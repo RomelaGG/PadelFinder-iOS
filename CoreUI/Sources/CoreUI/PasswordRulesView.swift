@@ -10,34 +10,34 @@ import SwiftUI
 
 // MARK: - PasswordPolicy
 
-/// What counts as an acceptable new password.
+/// What counts as an acceptable new password: length, and nothing else.
 ///
-/// Three rules, deliberately. Longer lists push people towards passwords they
-/// have to write down, and the server only enforces length anyway — so this is
-/// the stricter of the two and can never reject something the backend would
-/// have accepted.
+/// Composition rules — a letter, a digit, a symbol — used to live here too.
+/// They bought almost nothing (`12345678` simply becomes `1234567a`) while
+/// pushing people towards predictable mutations, which is why NIST SP 800-63B
+/// now says verifiers SHALL NOT impose them. Length is the floor that standard
+/// does still require.
+///
+/// This matches the server exactly: `RegisterRequest` and `ResetPasswordRequest`
+/// both validate `.count(8...256)` and apply no other rule. The one gap is the
+/// upper bound, which is not mirrored here — a pasted passphrase over 256
+/// characters passes this check and is refused by the backend.
 public enum PasswordPolicy {
 
     public static let minimumLength = 8
 
     public enum Rule: CaseIterable {
         case length
-        case letter
-        case number
 
         public var copy: String {
             switch self {
             case .length: return "At least \(PasswordPolicy.minimumLength) characters"
-            case .letter: return "At least one letter"
-            case .number: return "At least one number"
             }
         }
 
         func isMet(by password: String) -> Bool {
             switch self {
             case .length: return password.count >= PasswordPolicy.minimumLength
-            case .letter: return password.contains(where: \.isLetter)
-            case .number: return password.contains(where: \.isNumber)
             }
         }
     }
@@ -55,9 +55,8 @@ public enum PasswordPolicy {
 
 /// The live checklist under a new-password field.
 ///
-/// Shown only once the field has been focused — a checklist of three red
-/// crosses on an untouched form reads as a telling-off before the user has
-/// done anything.
+/// Shown only once the field has been focused — an unmet rule sitting under an
+/// untouched form reads as a telling-off before the user has done anything.
 public struct PasswordRulesView: View {
     private let password: String
 

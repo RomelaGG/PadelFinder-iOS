@@ -225,14 +225,28 @@ private extension PadelTextField.Kind {
         }
     }
 
+    /// `.newPassword` deliberately reports itself as `.password`.
+    ///
+    /// `UITextContentType.newPassword` is what triggers iOS's Automatic Strong
+    /// Passwords sheet - the "Use Strong Password?" card that takes over the
+    /// screen the moment the field is focused. We do not want it interrupting
+    /// sign-up, so the field claims the plainer type. The cost is only that iOS
+    /// no longer offers to *generate* a password; filling and saving still work.
+    ///
+    /// Do not try `nil` here to get rid of the Passwords key in the QuickType
+    /// bar. That was measured on iOS 16.4 and iOS 26 and the key stayed on
+    /// both: it is driven by the field being a `SecureField` at all, not by
+    /// this type, and no public API suppresses it. Nil only costs AutoFill on
+    /// sign-in, filling by third-party password managers, and the system's
+    /// offer to save - buying nothing. The only way to lose the key is to stop
+    /// using `SecureField` and mask the text by hand, which is not worth it.
     var contentType: UITextContentType? {
         switch self {
-        case .plain:       return nil
-        case .email:       return .emailAddress
-        case .password:    return .password
-        case .newPassword: return .newPassword
-        case .phone:       return .telephoneNumber
-        case .name:        return .name
+        case .plain:                  return nil
+        case .email:                  return .emailAddress
+        case .password, .newPassword: return .password
+        case .phone:                  return .telephoneNumber
+        case .name:                   return .name
         }
     }
 

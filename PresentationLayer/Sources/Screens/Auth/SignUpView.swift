@@ -111,15 +111,13 @@ private extension SignUpView {
     }
 
     var footer: some View {
-        VStack(spacing: PadelDesignTokens.Spacing.m) {
-            PadelButton(
-                AuthCopy.SignUp.submit,
-                isLoading: viewModel.state.isSubmitting,
-                isEnabled: viewModel.state.canSubmit
-            ) {
-                viewModel.handleIntent(.submitTapped)
-            }
-
+        AuthActionFooter(
+            title: AuthCopy.SignUp.submit,
+            isLoading: viewModel.state.isSubmitting,
+            isEnabled: viewModel.state.canSubmit
+        ) {
+            viewModel.handleIntent(.submitTapped)
+        } prompt: {
             AuthFooterPrompt(
                 question: AuthCopy.Welcome.haveAccount,
                 actionTitle: AuthCopy.Common.signIn
