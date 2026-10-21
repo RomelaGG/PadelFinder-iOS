@@ -10,11 +10,25 @@
 	     $(AppIdentifierPrefix) resolves to the team prefix, so automatic
 	     signing grants this without any change in the developer portal.
 
-	     Sign in with Apple, Apple Pay, Associated Domains and Push belong in
-	     this file too when they are wired up. -->
+	     Apple Pay, Associated Domains and Push belong in this file too when
+	     they are wired up. -->
 	<key>keychain-access-groups</key>
 	<array>
 		<string>$(AppIdentifierPrefix)GR.PadelFinder</string>
+	</array>
+	<!-- Sign in with Apple. "Default" is the native flow; the other value,
+	     "Default ProvisioningProfile", exists only for web/Services-ID
+	     flows, which this app does not use.
+
+	     This key alone is not enough: the capability must also be enabled on
+	     the App ID in the developer portal and picked up by a refreshed
+	     provisioning profile. With the key here but the capability off, the
+	     Apple sheet fails at runtime with ASAuthorizationError.unknown -
+	     which is a different symptom from the -34018 above, and worth
+	     telling apart. -->
+	<key>com.apple.developer.applesignin</key>
+	<array>
+		<string>Default</string>
 	</array>
 </dict>
 </plist>

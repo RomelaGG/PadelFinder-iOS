@@ -25,6 +25,31 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<!-- Sign in with Google. Both values come out of the same iOS OAuth
+	     client in Google Cloud Console and have to agree: GIDClientID is the
+	     client id, CFBundleURLSchemes carries its reversed form, which is the
+	     redirect Google hands the authorization code back on.
+
+	     Left commented until that client exists, so the build is never
+	     half-configured: with GIDClientID absent the provider throws
+	     SocialCredentialError.notConfigured instead of opening a sheet that
+	     cannot complete. Uncomment both, paste the two values, and flip
+	     AuthFeatureFlags.googleSignInEnabled.
+
+	<key>GIDClientID</key>
+	<string>000000000000-abcdefghijklmnop.apps.googleusercontent.com</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.000000000000-abcdefghijklmnop</string>
+			</array>
+		</dict>
+	</array>
+	-->
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

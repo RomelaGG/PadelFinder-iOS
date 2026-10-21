@@ -57,7 +57,6 @@ enum SignInViewModelIntent {
     case forgotPasswordTapped
     case createAccountTapped
     case bannerActionTapped
-    case socialTapped(AuthProvider)
     case focusHandled
     case routeHandled
 }
@@ -113,9 +112,6 @@ final class SignInViewModel: ObservableObject, FormBindable {
                     purpose: .verifyEmail
                 )
             )
-
-        case let .socialTapped(provider):
-            show(AuthDomainError.socialSignInUnavailable(provider))
 
         case .focusHandled:
             state.focusRequest = nil

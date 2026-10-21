@@ -14,6 +14,7 @@
 		AE841EAE2FCE0C55000DEC18 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = AE841EAD2FCE0C55000DEC18 /* Swinject */; };
 		AEA1098E2FD6E5CA00553C62 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = AEA1098D2FD6E5CA00553C62 /* Alamofire */; };
 		AEA1099F2FD82F4100553C62 /* CoreDI in Frameworks */ = {isa = PBXBuildFile; productRef = AEA1099E2FD82F4100553C62 /* CoreDI */; };
+		AEF000122FD7000000000012 /* CoreSocialAuth in Frameworks */ = {isa = PBXBuildFile; productRef = AEF000112FD7000000000011 /* CoreSocialAuth */; };
 		AEA109A22FD8308500553C62 /* CoreNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = AEA109A12FD8308500553C62 /* CoreNetworking */; };
 		AEA109A52FD8317400553C62 /* CoreNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = AEA109A42FD8317400553C62 /* CoreNetworking */; };
 		AEA109A92FD843EA00553C62 /* CoreFormatting in Frameworks */ = {isa = PBXBuildFile; productRef = AEA109A82FD843EA00553C62 /* CoreFormatting */; };
@@ -67,6 +68,7 @@
 				AEF000012FD7000000000001 /* DomainLayer in Frameworks */,
 				AE7EC0222FCDDF9000390101 /* CoreNavigation in Frameworks */,
 				AEA1099F2FD82F4100553C62 /* CoreDI in Frameworks */,
+				AEF000122FD7000000000012 /* CoreSocialAuth in Frameworks */,
 				AEA109A52FD8317400553C62 /* CoreNetworking in Frameworks */,
 				AEA109A22FD8308500553C62 /* CoreNetworking in Frameworks */,
 				AE841EAB2FCDFEC1000DEC18 /* PresentationLayer in Frameworks */,
@@ -132,6 +134,7 @@
 				AEA109A12FD8308500553C62 /* CoreNetworking */,
 				AEA109A42FD8317400553C62 /* CoreNetworking */,
 				AEA109A82FD843EA00553C62 /* CoreFormatting */,
+				AEF000112FD7000000000011 /* CoreSocialAuth */,
 			);
 			productName = PadelFinder;
 			productReference = AE2E01562FCB20530084C4C8 /* PadelFinder.app */;
@@ -172,6 +175,7 @@
 				AEA109A02FD8308500553C62 /* XCLocalSwiftPackageReference "CoreDI" */,
 				AEA109A32FD8317400553C62 /* XCLocalSwiftPackageReference "CoreNetworking" */,
 				AEA109A72FD843EA00553C62 /* XCLocalSwiftPackageReference "CoreFormatting" */,
+				AEF000102FD7000000000010 /* XCLocalSwiftPackageReference "CoreSocialAuth" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = AE2E01572FCB20530084C4C8 /* Products */;
@@ -444,6 +448,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = CoreFormatting;
 		};
+		AEF000102FD7000000000010 /* XCLocalSwiftPackageReference "CoreSocialAuth" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = CoreSocialAuth;
+		};
 		AEF000032FD7000000000003 /* XCLocalSwiftPackageReference "DomainLayer" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = DomainLayer;
@@ -511,6 +519,10 @@
 		AEA109A82FD843EA00553C62 /* CoreFormatting */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CoreFormatting;
+		};
+		AEF000112FD7000000000011 /* CoreSocialAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreSocialAuth;
 		};
 		AEF000052FD7000000000005 /* DomainLayer */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -27,8 +27,16 @@ public struct PadelTextField: View {
         case name
     }
 
+    /// Which of the two secure-kind fields holds first responder. Both are
+    /// always in the hierarchy; see `input`.
+    fileprivate enum Slot: Hashable {
+        case masked
+        case revealed
+    }
+
     @Binding private var text: String
     @FocusState private var internalFocus: Bool
+    @FocusState private var slotFocus: Slot?
     @State private var isSecureTextVisible = false
 
     private let label: String
@@ -85,7 +93,15 @@ private extension PadelTextField {
 
     var focusBinding: FocusState<Bool>.Binding { externalFocus ?? $internalFocus }
 
-    var isFocused: Bool { externalFocus?.wrappedValue ?? internalFocus }
+    /// Secure kinds ask the slot, which names the one field allowed to hold
+    /// focus. The external binding reports the same thing, but only because
+    /// both fields are wired to it; the slot is the authority, so the halo
+    /// follows it rather than its reflection.
+    var isFocused: Bool {
+        if kind.isSecure { return slotFocus != nil }
+
+        return externalFocus?.wrappedValue ?? internalFocus
+    }
 
     var hasError: Bool { errorText != nil }
 
@@ -114,47 +130,105 @@ private extension PadelTextField {
         }
         .animation(.easeOut(duration: PadelDesignTokens.Motion.fast), value: isFocused)
         .allowsHitTesting(isEnabled)
+        .onChange(of: focusBinding.wrappedValue) { adoptExternalFocus($0) }
     }
 
+    /// A secure field is two fields, both alive at once.
+    ///
+    /// `SecureField` and `TextField` are different types, so swapping one for
+    /// the other changes view identity: SwiftUI tears down the backing
+    /// `UITextField`, UIKit loses its first responder, and the keyboard leaves
+    /// with it - visibly, however fast focus is re-asserted afterwards. Keeping
+    /// both in the hierarchy and swapping them by opacity turns the reveal into
+    /// a move of first responder between two live text inputs, which UIKit does
+    /// without touching the keyboard.
+    ///
+    /// Hence `opacity` and never `if`: the hidden field has to stay mounted for
+    /// this to work at all.
     @ViewBuilder
     var input: some View {
         let prompt = Text(placeholder)
             .font(PadelDesignTokens.Fonts.input)
             .foregroundColor(PadelDesignTokens.Colors.textSecondary)
 
-        Group {
-            if kind.isSecure, !isSecureTextVisible {
-                SecureField("", text: $text, prompt: prompt)
-            } else {
-                TextField("", text: $text, prompt: prompt)
+        if kind.isSecure {
+            ZStack(alignment: .leading) {
+                styled(SecureField("", text: $text, prompt: prompt))
+                    .focused($slotFocus, equals: .masked)
+                    .focused(focusBinding)
+                    .textContentType(isSecureTextVisible ? nil : kind.contentType)
+                    .opacity(isSecureTextVisible ? 0 : 1)
+                    .allowsHitTesting(!isSecureTextVisible)
+                    .accessibilityHidden(isSecureTextVisible)
+
+                styled(TextField("", text: $text, prompt: prompt))
+                    .focused($slotFocus, equals: .revealed)
+                    .focused(focusBinding)
+                    .textContentType(isSecureTextVisible ? kind.contentType : nil)
+                    .opacity(isSecureTextVisible ? 1 : 0)
+                    .allowsHitTesting(isSecureTextVisible)
+                    .accessibilityHidden(!isSecureTextVisible)
             }
+        } else {
+            styled(TextField("", text: $text, prompt: prompt))
+                .focused(focusBinding)
+                .textContentType(kind.contentType)
         }
-        .font(PadelDesignTokens.Fonts.input)
-        .foregroundStyle(
-            isEnabled
-                ? PadelDesignTokens.Colors.textPrimary
-                : PadelDesignTokens.Colors.textDisabled
-        )
-        .tint(PadelDesignTokens.Colors.accent)
-        .focused(focusBinding)
-        .submitLabel(submitLabel)
-        .onSubmit { onSubmit?() }
-        .keyboardType(kind.keyboardType)
-        .textContentType(kind.contentType)
-        .textInputAutocapitalization(kind.autocapitalization)
-        .autocorrectionDisabled(kind.disablesAutocorrection)
-        .accessibilityLabel(label)
+    }
+
+    /// Everything the masked and revealed fields must agree on, in one place so
+    /// that they cannot drift apart.
+    ///
+    /// `textContentType` is deliberately left out: exactly one of the two may
+    /// claim it - the visible one - because two live fields both reporting
+    /// `.password` confuse AutoFill and the system's offer to save the
+    /// credential.
+    func styled(_ field: some View) -> some View {
+        field
+            .font(PadelDesignTokens.Fonts.input)
+            .foregroundStyle(
+                isEnabled
+                    ? PadelDesignTokens.Colors.textPrimary
+                    : PadelDesignTokens.Colors.textDisabled
+            )
+            .tint(PadelDesignTokens.Colors.accent)
+            .submitLabel(submitLabel)
+            .onSubmit { onSubmit?() }
+            .keyboardType(kind.keyboardType)
+            .textInputAutocapitalization(kind.autocapitalization)
+            .autocorrectionDisabled(kind.disablesAutocorrection)
+            .accessibilityLabel(label)
+    }
+
+    /// Both secure fields also carry `.focused(focusBinding)`, so the screen's
+    /// own `@FocusState` reports focus for whichever of them holds it - a
+    /// `@FocusState` no view is bound to is reset by SwiftUI, so it cannot
+    /// simply be assigned to from here.
+    ///
+    /// That leaves the screen *writing* `true` ambiguous between the two, which
+    /// is what this corrects: the slot is the single authority on which field
+    /// may hold focus, and the visible one always wins.
+    func adoptExternalFocus(_ wantsFocus: Bool) {
+        guard kind.isSecure else { return }
+
+        let wanted: Slot? = wantsFocus ? (isSecureTextVisible ? .revealed : .masked) : nil
+
+        if slotFocus != wanted { slotFocus = wanted }
     }
 
     var revealButton: some View {
         Button {
+            // One transaction, so first responder moves straight from one live
+            // field to the other and the keyboard never animates. Deferring
+            // this to a later hop is what used to make it dip and return.
+            let wasFocused = slotFocus != nil
+
             isSecureTextVisible.toggle()
 
-            // Swapping SecureField for TextField replaces the view and drops
-            // the keyboard with it. One hop later, focus is re-asserted so
-            // typing carries on where it left off.
-            Task { @MainActor in
-                focusBinding.wrappedValue = true
+            // Only ever *restores* focus. Peeking at an AutoFilled password on
+            // an idle field should not summon the keyboard.
+            if wasFocused {
+                slotFocus = isSecureTextVisible ? .revealed : .masked
             }
         } label: {
             Image(systemName: isSecureTextVisible ? "eye.slash" : "eye")

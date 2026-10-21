@@ -13,6 +13,7 @@ import SwiftUI
 
 struct SignInView: View {
     @StateObject private var viewModel: SignInViewModel
+    @StateObject private var social = SocialSignInModel()
     @EnvironmentObject private var navigator: Navigator<AuthNavigatorDestination>
 
     @FocusState private var isEmailFocused: Bool
@@ -41,6 +42,14 @@ struct SignInView: View {
         .authRouting(viewModel.state.route) {
             viewModel.handleIntent(.routeHandled)
         }
+        .onChange(of: social.signedInUser) { user in
+            guard let user else { return }
+
+            navigator.replaceStack(with: .success(email: user.email))
+        }
+        // A social failure is stale the moment the user goes back to typing.
+        .onChange(of: viewModel.state.email) { _ in social.clearBanner() }
+        .onChange(of: viewModel.state.password) { _ in social.clearBanner() }
     }
 }
 
@@ -50,7 +59,10 @@ private extension SignInView {
 
     var form: some View {
         VStack(alignment: .leading, spacing: PadelDesignTokens.Layout.fieldGap) {
-            if let message = viewModel.state.bannerMessage {
+            if let message = social.bannerMessage {
+                PadelInlineBanner(message, kind: social.bannerKind)
+                    .padding(.bottom, PadelDesignTokens.Spacing.xs)
+            } else if let message = viewModel.state.bannerMessage {
                 PadelInlineBanner(
                     message,
                     kind: viewModel.state.bannerKind,
@@ -96,17 +108,11 @@ private extension SignInView {
             PadelLabeledDivider(AuthCopy.Common.or)
                 .padding(.vertical, PadelDesignTokens.Spacing.xl)
 
-            PadelAppleButton {
-                viewModel.handleIntent(.socialTapped(.apple))
-            }
-
-            PadelSocialButton(provider: .google) {
-                viewModel.handleIntent(.socialTapped(.google))
-            }
+            SocialMethodButtons(social: social, isDisabled: viewModel.state.isSubmitting)
         }
         .animation(
             .easeOut(duration: PadelDesignTokens.Motion.standard),
-            value: viewModel.state.bannerMessage
+            value: social.bannerMessage ?? viewModel.state.bannerMessage
         )
     }
 

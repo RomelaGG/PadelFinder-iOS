@@ -20,7 +20,7 @@ import SwiftUI
 struct SignInGateSheet: View {
     @EnvironmentObject private var presenter: AuthPresenter
 
-    @State private var bannerMessage: String?
+    @StateObject private var social = SocialSignInModel()
 
     private let reason: String?
 
@@ -32,8 +32,8 @@ struct SignInGateSheet: View {
         VStack(spacing: 0) {
             header
 
-            if let bannerMessage {
-                PadelInlineBanner(bannerMessage)
+            if let bannerMessage = social.bannerMessage {
+                PadelInlineBanner(bannerMessage, kind: social.bannerKind)
                     .padding(.top, PadelDesignTokens.Layout.sectionGap)
             }
 
@@ -56,8 +56,19 @@ struct SignInGateSheet: View {
         .modifier(SheetCornerRadius())
         .animation(
             .easeOut(duration: PadelDesignTokens.Motion.standard),
-            value: bannerMessage
+            value: social.bannerMessage
         )
+        // Signed in, so the thing the user originally tapped is permitted now
+        // and the interruption is over. `AuthRepository.adopt(_:)` has already
+        // written the Keychain and flipped `AuthSession`, so there is nothing
+        // left to do and nowhere to go - this sheet has no `Navigator` in its
+        // environment, and a 380pt celebration over the thing the user was
+        // actually doing would be the wrong answer even if it did.
+        .onChange(of: social.signedInUser) { user in
+            guard user != nil else { return }
+
+            presenter.dismissGate()
+        }
     }
 }
 
@@ -83,17 +94,7 @@ private extension SignInGateSheet {
 
     var methods: some View {
         VStack(spacing: PadelDesignTokens.Layout.fieldGap) {
-            PadelAppleButton {
-                bannerMessage = AuthDomainError
-                    .socialSignInUnavailable(.apple)
-                    .localizedDescription
-            }
-
-            PadelSocialButton(provider: .google) {
-                bannerMessage = AuthDomainError
-                    .socialSignInUnavailable(.google)
-                    .localizedDescription
-            }
+            SocialMethodButtons(social: social)
 
             // Hands off to the full flow through the presenter, which
             // dismisses this sheet first and presents the flow from

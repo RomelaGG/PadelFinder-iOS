@@ -9,6 +9,7 @@ import SwiftUI
 import PresentationLayer
 import CoreDI
 import CoreNetworking
+import CoreSocialAuth
 import DataLayer
 import DomainLayer
 import CoreFormatting
@@ -37,6 +38,7 @@ struct PadelFinderApp: App {
             CoreFormatterAssembly(),
             DataAssembly(),
             DomainAssembly(),
+            SocialAuthAssembly(),
             AuthAssembly()
         ])
     }
@@ -44,6 +46,9 @@ struct PadelFinderApp: App {
     var body: some Scene {
         WindowGroup {
             PadelFinderTabView()
+                // A provider's custom-scheme callback, forwarded through
+                // CoreSocialAuth so the SDK stays inside that package.
+                .onOpenURL { SocialAuthURLHandler.handle($0) }
         }
     }
 }

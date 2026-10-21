@@ -20,7 +20,7 @@ struct WelcomeView: View {
     @EnvironmentObject private var navigator: Navigator<AuthNavigatorDestination>
     @EnvironmentObject private var presenter: AuthPresenter
 
-    @State private var bannerMessage: String?
+    @StateObject private var social = SocialSignInModel()
 
     var body: some View {
         AuthScreenScaffold {
@@ -34,6 +34,11 @@ struct WelcomeView: View {
             }
         }
         .navBarButton(.close) { presenter.dismissFlow() }
+        .onChange(of: social.signedInUser) { user in
+            guard let user else { return }
+
+            navigator.replaceStack(with: .success(email: user.email))
+        }
     }
 }
 
@@ -49,8 +54,8 @@ private extension WelcomeView {
             heroText
                 .padding(.top, PadelDesignTokens.Layout.sectionGap)
 
-            if let bannerMessage {
-                PadelInlineBanner(bannerMessage)
+            if let bannerMessage = social.bannerMessage {
+                PadelInlineBanner(bannerMessage, kind: social.bannerKind)
                     .padding(.top, PadelDesignTokens.Layout.sectionGap)
             }
 
@@ -64,7 +69,7 @@ private extension WelcomeView {
         .frame(maxWidth: .infinity)
         .animation(
             .easeOut(duration: PadelDesignTokens.Motion.standard),
-            value: bannerMessage
+            value: social.bannerMessage
         )
     }
 
@@ -86,13 +91,7 @@ private extension WelcomeView {
 
     var methods: some View {
         VStack(spacing: PadelDesignTokens.Layout.fieldGap) {
-            PadelAppleButton {
-                show(AuthDomainError.socialSignInUnavailable(.apple))
-            }
-
-            PadelSocialButton(provider: .google) {
-                show(AuthDomainError.socialSignInUnavailable(.google))
-            }
+            SocialMethodButtons(social: social)
 
             PadelLabeledDivider(AuthCopy.Common.or)
                 .padding(.vertical, PadelDesignTokens.Spacing.xl)
@@ -101,11 +100,5 @@ private extension WelcomeView {
                 navigator.push(.signUp)
             }
         }
-    }
-
-    /// `ASAuthorizationError.canceled` would be silent here if Apple were
-    /// wired — a user who backed out of the sheet does not need an error.
-    func show(_ error: AuthDomainError) {
-        bannerMessage = error.localizedDescription
     }
 }
